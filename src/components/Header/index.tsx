@@ -23,7 +23,7 @@ const Header = () => {
         <header className={classes.header}>
             <Typography variant='body1'>Количество ошибок: {mistakesCount} </Typography>
             <Timer />
-            <Button variant='outlined' onClick={() => dispatch(timerActions.startStopTimer())}>Начать печатать</Button>
+            {/* <Button variant='outlined' onClick={() => dispatch(timerActions.startStopTimer())}>Начать печатать</Button> */}
         </header>
     )
 }

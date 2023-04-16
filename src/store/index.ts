@@ -1,14 +1,16 @@
 import { Action, ActionCreator, combineReducers, configureStore, ThunkAction } from "@reduxjs/toolkit"
 import mistakesSlice from "./slices/mistakesSlice"
-import currentSymbolSlice from './slices/currentSymbolSlice';
+import keyboardSlice from './slices/keyboardSlice';
 import textSlice from './slices/textSlice';
 import timerSlice from './slices/timerSlice';
+import statatisticsSlice from './slices/statisticsSlice';
 
 const rootReducer = combineReducers({
     mistakes: mistakesSlice,
-    currentSymbol: currentSymbolSlice,
-    text: textSlice,
-    timer: timerSlice
+    keyboard: keyboardSlice,
+    // text: textSlice,
+    timer: timerSlice,
+    statatistics: statatisticsSlice,
 })
 
 

@@ -1,12 +1,17 @@
 
 import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction } from '@reduxjs/toolkit';
 
 interface ITimerState {
-    timerIsStarted: boolean
+    timerIsStarted: boolean,
+    dateTimerStart: number;
+    dateTimerFinish: number;
 }
 
-const initialState = {
+const initialState: ITimerState = {
     timerIsStarted: false,
+    dateTimerFinish: 0,
+    dateTimerStart: 0,
 }
 
 const timerSlice = createSlice({
@@ -15,7 +20,15 @@ const timerSlice = createSlice({
     reducers: {
         startStopTimer(state) {
             state.timerIsStarted = !state.timerIsStarted
-        }
+        },
+
+        setDateTimeStart(state, action: PayloadAction<number>) {{
+            state.dateTimerStart = action.payload
+        }},
+
+        setDateTimeFinish(state, action: PayloadAction<number>) {{
+            state.dateTimerFinish = action.payload
+        }},
     }
 })
 

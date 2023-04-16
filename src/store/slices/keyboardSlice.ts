@@ -2,15 +2,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 
-interface ICurrentSymbolState {
+interface IKeyboardState {
     currentSymbol: string;
 }
 
-const initialState: ICurrentSymbolState = {
+const initialState: IKeyboardState = {
     currentSymbol: "",
 }
 
-const currentSymbolSlice = createSlice({
+const keyboardSlice = createSlice({
     initialState,
     name: "currentSymbol",
     reducers: {
@@ -25,5 +25,5 @@ const currentSymbolSlice = createSlice({
     }
 })
 
-export default currentSymbolSlice.reducer
-export const currentSymbolActions = currentSymbolSlice.actions
+export default keyboardSlice.reducer
+export const { setCurrentSymbol } = keyboardSlice.actions

@@ -1,19 +1,8 @@
 
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { IText } from '../../types/IText';
+import { fetchText } from '../asyncActions/fetchText';
 
-export const fetchText = createAsyncThunk<IText, void>(
-    "text/fetchText",
-    async () => {
-        try {
-            const url = 'https://fish-text.ru/get?type=paragraph&number=1&format=json&lang=ru'
-            const response = await fetch(url)
-            return response.json();
-        } catch(e) {
-            return (e as Error).message
-        }
-    }
-)
 
 interface ITextState {
     text: string,

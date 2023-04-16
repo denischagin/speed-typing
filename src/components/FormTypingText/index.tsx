@@ -1,13 +1,13 @@
 import { useState, Fragment, useRef, useEffect, FC, DOMElement, ChangeEvent, ChangeEventHandler } from 'react'
 import { makeStyles, Typography, TextField, createTheme, ThemeProvider } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { mistakesActions } from '../../store/slices/mistakesSlice';
-import { currentSymbolActions } from '../../store/slices/currentSymbolSlice';
-import { fetchText } from '../../store/slices/textSlice';
 import PrintableText from './PrintableText/index';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { timerActions } from '../../store/slices/timerSlice';
 import Statistics from './Statistics';
+import { fetchText } from '../../store/asyncActions/fetchText';
+import { setCurrentSymbol } from '../../store/slices/keyboardSlice';
+import { incrementMistakes, setMistakes } from '../../store/slices/mistakesSlice';
 
 
 const useStyles = makeStyles({
@@ -34,6 +34,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText }) => {
 
     const textFieldInputRef = useRef<HTMLInputElement>(null)
 
+    const [showStats, setShowStats] = useState(false)
     const [value, setValue] = useState('')
     const [isErrorInput, setIsErrorInput] = useState(false)
     const [currentWordIndex, setCurrentWordIndex] = useState(0)
@@ -55,30 +56,30 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText }) => {
 
     useEffect(() => {
         if (words.length === 0) return
-        if (words.length === currentWordIndex) return clearFromTypingText()
+        if (words.length === currentWordIndex) return stopTimerAndShowStats()
 
-        dispatch(currentSymbolActions.setCurrentSymbol(words[currentWordIndex][0]))
+        dispatch(setCurrentSymbol(words[currentWordIndex][0]))
     }, [currentWordIndex])
 
     const startNewText = () => {
         const newWords = printingText.split(" ")
         setWords(newWords)
-        dispatch(currentSymbolActions.setCurrentSymbol(newWords[0][0]))
+        dispatch(setCurrentSymbol(newWords[0][0]))
     }
 
     const goToStats = () => {
         setStatsPage(true)
     }
 
-    const clearFromTypingText = () => {
-        dispatch(fetchText())
-        setCurrentWordIndex(0);
-        dispatch(mistakesActions.setMistakes(0))
+    const stopTimerAndShowStats = () => {
+        // dispatch(fetchText())
+        // setCurrentWordIndex(0);
+        // dispatch(setMistakes(0))
+        setShowStats(true)
         dispatch(timerActions.startStopTimer())
     }
 
     const onInputStart = (value: string) => {
-        console.log(value, !timerIsStarted)
         if (!timerIsStarted && value.length === 1) dispatch(timerActions.startStopTimer())
     }
 
@@ -103,29 +104,33 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText }) => {
             const currentSymbol: string | undefined = words[currentWordIndex][currentValue.length]
 
             if (currentSymbol === undefined)
-                return dispatch(currentSymbolActions.setCurrentSymbol("Space"))
+                return dispatch(setCurrentSymbol("Space"))
 
-            dispatch(currentSymbolActions.setCurrentSymbol(currentSymbol))
+            dispatch(setCurrentSymbol(currentSymbol))
         }
         else {
-            !isErrorInput && dispatch(mistakesActions.increment())
+            !isErrorInput && dispatch(incrementMistakes())
             setIsErrorInput(true)
         }
     }
 
     return (
         <div className={classes.FormTypingText_wrapper}>
-            <PrintableText currentWordIndex={currentWordIndex} words={words} isError={isErrorInput} />
-            <TextField
-                inputRef={textFieldInputRef}
-                label="Введите текст..."
-                className={classes.inputWord}
-                variant='outlined'
-                type="text"
-                error={isErrorInput}
-                value={value}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => { handlerInputChange(e) }} />
-        </div>
+            { !showStats 
+                ? <>
+                    <PrintableText currentWordIndex={currentWordIndex} words={words} isError={isErrorInput} />
+                    <TextField
+                        inputRef={textFieldInputRef}
+                        label="Введите текст..."
+                        className={classes.inputWord}
+                        variant='outlined'
+                        type="text"
+                        error={isErrorInput}
+                        value={value}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => { handlerInputChange(e) }} />
+                    </> 
+                : <Statistics />}
+        </div>  
 
     )
 }

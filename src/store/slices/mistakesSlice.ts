@@ -16,7 +16,7 @@ const mistakesSlice = createSlice({
             state.mistakesCount = action.payload;
         },
 
-        increment(state) {
+        incrementMistakes(state) {
             state.mistakesCount += 1;
         }
 
@@ -24,4 +24,4 @@ const mistakesSlice = createSlice({
 })
 
 export default mistakesSlice.reducer;
-export const mistakesActions = mistakesSlice.actions
+export const {setMistakes, incrementMistakes} = mistakesSlice.actions

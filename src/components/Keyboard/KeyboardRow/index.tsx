@@ -17,7 +17,7 @@ interface IKeyboardRowProps {
 
 const KeyboardRow: FC<IKeyboardRowProps> = ({ lettersRow }) => {
     const classes = useStyles()
-    const state = useAppSelector(state => state.currentSymbol)
+    const state = useAppSelector(state => state.keyboard)
 
     const symbolAndCtrl = (symbol: string ) => {
         switch (symbol) {

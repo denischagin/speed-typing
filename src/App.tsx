@@ -6,8 +6,9 @@ import Timer from './components/Header/Timer'
 import { Button, Collapse, Fade, Grow, makeStyles, Typography } from '@material-ui/core'
 import Keyboard from './components/Keyboard'
 import Header from './components/Header/index';
-import { fetchText } from './store/slices/textSlice'
 import { useAppDispatch, useAppSelector } from './hooks/redux';
+import StartPrintingText from './components/StartPrintingText';
+import { fetchText } from './store/asyncActions/fetchText';
 
 
 const useStyles = makeStyles({
@@ -32,21 +33,15 @@ const App = () => {
 
 	const dispatch = useAppDispatch()
 
-	const [keyboardActive, setKeyboardActive] = useState(false)
-	const { text, isLoading, error } = useAppSelector(state => state.text)
-
 	useEffect(() => {
 		dispatch(fetchText())
 	}, [])
 
 	return (
 		<div className={classes.container}>
+			<Button variant='outlined'>Начать писать</Button>
 			<Header />
-			{isLoading
-				? <Typography variant='h5'>Загрузка...</Typography>
-				: <FormTypingText printingText={text} />}
-			<Button onClick={() => setKeyboardActive(prev => !prev)} variant='outlined' >{keyboardActive ? "Закрыть" : "Открыть клавиатуру"}</Button>
-			{keyboardActive && <Keyboard />}
+			<StartPrintingText />
 		</div>
 	)
 }
