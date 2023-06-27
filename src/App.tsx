@@ -39,7 +39,7 @@ const App = () => {
 
 	return (
 		<div className={classes.container}>
-			<Button variant='outlined'>Начать писать</Button>
+			{/* <Button variant='outlined'>Начать писать</Button> */}
 			<Header />
 			<StartPrintingText />
 		</div>
