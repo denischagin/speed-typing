@@ -20,7 +20,7 @@ jobs:
           node-version: 16
 
       - name: Install dependencies
-        run: npm install --forse
+        run: npm --forse install 
 
       - name: Build project
         run: npm run build
