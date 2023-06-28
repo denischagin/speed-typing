@@ -9,7 +9,7 @@ import FormTypingText from "./components/FormTypingText";
 
 const App = () => {
   const [textType, setTextType] = useState<TextTypeEnum>(TextTypeEnum.SENTENCE);
-  const [textNumber, setTextNumber] = useState(1);
+  const [textNumber, setTextNumber] = useState(2);
 
   const dispatch = useAppDispatch();
 

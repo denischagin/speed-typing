@@ -40,6 +40,7 @@ const PrintableText: FC<IPrintableTextProps> = ({
     <Typography variant="body1" sx={commonText}>
       {words.map((word, index) =>
         <Word 
+					key={index}
 					currentWordIndex={currentWordIndex} 
 					index={index}
 					isError={isError}

@@ -25,20 +25,20 @@ interface IFormTypingTextProps {
   printingText: string;
 }
 
-
 const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
-	// styles
-	const formTypingTextWrapper: SxProps = {
-		display: "flex",
-		flexDirection: "column",
-		alignItems: "center",
-		gap: "20px",
-	};
-	const inputWord: SxProps = {
-		maxWidth: "400px",
-		width: "100%",
-	};
-	
+  // styles
+  const formTypingTextWrapper: SxProps = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    width: "100%",
+    gap: "20px",
+  };
+  const inputWord: SxProps = {
+    maxWidth: "400px",
+    width: "100%",
+  };
+
   const dispatch = useAppDispatch();
 
   const textFieldInputRef = useRef<HTMLInputElement>(null);
@@ -49,7 +49,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [words, setWords] = useState<string[]>([]);
   const [statsPage, setStatsPage] = useState(false);
-	const [keyboardActive, setKeyboardActive] = useState(false);
+  const [keyboardActive, setKeyboardActive] = useState(false);
 
   const { timerIsStarted } = useAppSelector((state) => state.timer);
 
@@ -140,19 +140,18 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
               handlerInputChange(e);
             }}
           />
+          <Button
+            onClick={() => setKeyboardActive((prev) => !prev)}
+            variant="outlined"
+          >
+            {keyboardActive ? "Закрыть" : "Открыть клавиатуру"}
+          </Button>
+
+          {keyboardActive && <Keyboard />}
         </>
       ) : (
         <Statistics />
       )}
-
-			<Button
-        onClick={() => setKeyboardActive((prev) => !prev)}
-        variant="outlined"
-      >
-        {keyboardActive ? "Закрыть" : "Открыть клавиатуру"}
-      </Button>
-			
-      {keyboardActive && <Keyboard />}
     </Box>
   );
 };

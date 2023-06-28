@@ -14,7 +14,6 @@ export const fetchText = createAsyncThunk<IText, ITextParams>(
         const { textType, textNumber: number } = textParams
         try {
             const result = await TextService.getText(textType, number)
-            console.log(result)
             return result
         } catch(e) {
             return (e as Error).message

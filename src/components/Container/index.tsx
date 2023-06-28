@@ -1,7 +1,11 @@
 import { Box } from "@mui/material";
-import React from "react";
+import React, { FC, ReactNode } from "react";
 
-const Container = () => {
+interface ContainerProps {
+  children: ReactNode
+}
+
+const Container: FC<ContainerProps> = ({ children }) => {
   return (
     <Box
       sx={{
@@ -15,7 +19,9 @@ const Container = () => {
         marginBottom: "10px",
         gap: "30px",
       }}
-    ></Box>
+    >
+      {children}
+    </Box>
   );
 };
 
