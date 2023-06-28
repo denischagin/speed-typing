@@ -1,13 +1,21 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { IText } from "../../types/IText";
+import { TextService } from "../../services/TextService";
+import { TextTypeEnum } from "../../types/TextTypeEnum";
 
-export const fetchText = createAsyncThunk<IText, void>(
+interface ITextParams {
+    textNumber: number
+    textType: TextTypeEnum,
+}
+
+export const fetchText = createAsyncThunk<IText, ITextParams>(
     "statatistics/fetchText",
-    async () => {
+    async (textParams) => {
+        const { textType, textNumber: number } = textParams
         try {
-            const url = 'https://fish-text.ru/get?type=paragraph&number=1&format=json&lang=ru'
-            const response = await fetch(url)
-            return response.json();
+            const result = await TextService.getText(textType, number)
+            console.log(result)
+            return result
         } catch(e) {
             return (e as Error).message
         }

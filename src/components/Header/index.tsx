@@ -1,31 +1,38 @@
-import { Button, makeStyles, Typography } from '@material-ui/core'
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { timerActions } from '../../store/slices/timerSlice';
-import Timer from './Timer/index';
+import { Box, SxProps, Typography } from "@mui/material";
+import { FC } from "react";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import Timer from "./Timer/index";
+import { TextTypeEnum } from "../../types/TextTypeEnum";
 
-const useStyles = makeStyles({
-    header: {
-        display: "flex",
-        justifyContent: "space-between",
-        width: "100%",
-    }
-
-})
-
-const Header = () => {
-    const classes = useStyles()
-    const dispatch = useAppDispatch()
-
-    const { mistakesCount } = useAppSelector(state => state.mistakes)
-    return (
-        <header className={classes.header}>
-            <Typography variant='body1'>Количество ошибок: {mistakesCount} </Typography>
-            <Timer />
-            {/* <Button variant='outlined' onClick={() => dispatch(timerActions.startStopTimer())}>Начать печатать</Button> */}
-        </header>
-    )
+interface HeaderProps {
+  textType: TextTypeEnum;
+  textNumber: number;
 }
 
-export default Header
+const header: SxProps = {
+  display: "flex",
+  width: "100%",
+};
+
+const Header: FC<HeaderProps> = ({}) => {
+  const dispatch = useAppDispatch();
+
+  const { mistakesCount } = useAppSelector((state) => state.mistakes);
+  return (
+    <Box component="header" sx={header}>
+      <Typography
+        variant="body1"
+        sx={{
+          flexGrow: 1,
+        }}
+      >
+        Количество ошибок: {mistakesCount}
+      </Typography>
+
+      <Timer />
+      {/* <Button variant='outlined' onClick={() => dispatch(timerActions.startStopTimer())}>Начать печатать</Button> */}
+    </Box>
+  );
+};
+
+export default Header;

@@ -1,49 +1,43 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import FormTypingText from './components/FormTypingText'
-import './App.css'
-import Timer from './components/Header/Timer'
-import { Button, Collapse, Fade, Grow, makeStyles, Typography } from '@material-ui/core'
-import Keyboard from './components/Keyboard'
-import Header from './components/Header/index';
-import { useAppDispatch, useAppSelector } from './hooks/redux';
-import StartPrintingText from './components/StartPrintingText';
-import { fetchText } from './store/asyncActions/fetchText';
-
-
-const useStyles = makeStyles({
-	container: {
-		display: "flex",
-		flexDirection: "column",
-		justifyContent: "center",
-		alignItems: "center",
-		maxWidth: "1000px",
-		padding: "0 15px",
-		margin: "0 auto",
-		marginBottom: "10px",
-		gap: "30px"
-	},
-	keyboard_wrapper: {
-		width: "100%"
-	}
-})
+import { useEffect, useState } from "react";
+import "./App.css";
+import { Container, Typography } from "@mui/material";
+import Header from "./components/Header/index";
+import { useAppDispatch, useAppSelector } from "./hooks/redux";
+import { fetchText } from "./store/asyncActions/fetchText";
+import { TextTypeEnum } from "./types/TextTypeEnum";
+import FormTypingText from "./components/FormTypingText";
 
 const App = () => {
-	const classes = useStyles();
+  const [textType, setTextType] = useState<TextTypeEnum>(TextTypeEnum.SENTENCE);
+  const [textNumber, setTextNumber] = useState(1);
 
-	const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
-	useEffect(() => {
-		dispatch(fetchText())
-	}, [])
+  useEffect(() => {
+    dispatch(fetchText({ textType, textNumber }));
+  }, [textType, textNumber]);
 
-	return (
-		<div className={classes.container}>
-			{/* <Button variant='outlined'>Начать писать</Button> */}
-			<Header />
-			<StartPrintingText />
-		</div>
-	)
-}
+  const { text, isLoading, error } = useAppSelector(
+    (state) => state.statatistics
+  );
 
-export default App
+  if (isLoading) return <Typography variant="h5">Загрузка...</Typography>;
+  if (error)
+    return (
+      <Typography variant="h5" color="error">
+        {error}
+      </Typography>
+    );
+
+  const headerProps = { textType, textNumber };
+
+  return (
+    <Container>
+      <Header {...headerProps} />
+      <FormTypingText printingText={text} />
+      {/* <Button variant='outlined'>Начать писать</Button> */}
+    </Container>
+  );
+};
+
+export default App;
