@@ -32,11 +32,14 @@ const App = () => {
   const headerProps = { textType, textNumber };
 
   return (
-    <Container>
+    <>
       <Header {...headerProps} />
-      <FormTypingText printingText={text} />
-      {/* <Button variant='outlined'>Начать писать</Button> */}
-    </Container>
+      <Container>
+        <FormTypingText printingText={text} />
+        {/* <Button variant='outlined'>Начать писать</Button> */}
+      </Container>
+    </>
+    
   );
 };
 

@@ -1,4 +1,4 @@
-import { Box, SxProps, Typography } from "@mui/material";
+import { Box, SxProps, Typography, AppBar, Toolbar } from "@mui/material";
 import { FC } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import Timer from "./Timer/index";
@@ -9,29 +9,32 @@ interface HeaderProps {
   textNumber: number;
 }
 
-const header: SxProps = {
-  display: "flex",
-  width: "100%",
-};
-
 const Header: FC<HeaderProps> = ({}) => {
+  const toolbar: SxProps = {
+    display: "flex",
+    width: "100%",
+  };
+
   const { mistakesCount } = useAppSelector((state) => state.mistakes);
 
   return (
-    <Box component="header" sx={header}>
-      <Typography
-        variant="body1"
-        sx={{
-          flexGrow: 1,
-        }}
-      >
-        Количество ошибок: <Typography component="span" fontWeight="bold">{mistakesCount}</Typography>
-      </Typography>
+    <AppBar position="static">
+      <Toolbar sx={toolbar}>
+        <Typography
+          variant="body1"
+          sx={{
+            flexGrow: 1,
+          }}
+        >
+          Количество ошибок:{" "}
+          <Typography component="span" variant="h6">
+            {mistakesCount}
+          </Typography>
+        </Typography>
 
-      <Timer />
-
-
-    </Box>
+        <Timer />
+      </Toolbar>
+    </AppBar>
   );
 };
 

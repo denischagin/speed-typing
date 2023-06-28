@@ -33,6 +33,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
     alignItems: "center",
     width: "100%",
     gap: "20px",
+    marginTop: "20px"
   };
   const inputWord: SxProps = {
     maxWidth: "400px",
@@ -128,6 +129,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
             words={words}
             isError={isErrorInput}
           />
+
           <TextField
             inputRef={textFieldInputRef}
             label="Введите текст..."
@@ -140,6 +142,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
               handlerInputChange(e);
             }}
           />
+
           <Button
             onClick={() => setKeyboardActive((prev) => !prev)}
             variant="outlined"

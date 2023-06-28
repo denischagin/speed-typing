@@ -1,5 +1,5 @@
-import React, { FC, ReactNode } from "react";
-import { Typography, SxProps } from "@mui/material";
+import React, { FC, ReactNode, memo } from "react";
+import { Typography, SxProps, useTheme } from "@mui/material";
 
 interface WordProps {
   children: ReactNode;
@@ -14,8 +14,11 @@ const Word: FC<WordProps> = ({
   isError,
   index,
 }) => {
+  const theme = useTheme();
+  console.log("render word");
+
   const spanPrintedText: SxProps = {
-    backgroundColor: "#dfe1ed",
+    backgroundColor: theme.palette.primary.light,
     boxShadow: "0px 0px 2px black",
   };
   const spanText: SxProps = {
@@ -24,11 +27,10 @@ const Word: FC<WordProps> = ({
     boxShadow: "0px 0px 2px transparent",
     margin: "0px 2px",
     lineHeight: "1.4",
-    backgroundColor: "white",
     borderRadius: "4px",
   };
   const errorText: SxProps = {
-    backgroundColor: "#ffd2d7",
+    backgroundColor: theme.palette.error.light,
   };
 
   const wordStyle: SxProps =
