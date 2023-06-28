@@ -15,7 +15,6 @@ const Word: FC<WordProps> = ({
   index,
 }) => {
   const theme = useTheme();
-  console.log("render word");
 
   const spanPrintedText: SxProps = {
     backgroundColor: theme.palette.primary.light,
@@ -41,10 +40,22 @@ const Word: FC<WordProps> = ({
       : spanText;
 
   return (
-    <Typography component="span" key={index} sx={wordStyle}>
+    <Typography
+      component="span"
+      color={currentWordIndex > index ? theme.palette.grey[600] : null}
+      key={index}
+      sx={wordStyle}
+    >
       {children}
     </Typography>
   );
 };
 
-export default Word;
+export default memo(Word, (prevProps, nextProps) => {
+  return (
+    (prevProps.isError === nextProps.isError &&
+      prevProps.currentWordIndex === nextProps.currentWordIndex) ||
+    (nextProps.currentWordIndex !== prevProps.index &&
+      nextProps.currentWordIndex - 1 !== prevProps.index)
+  );
+});

@@ -1,4 +1,5 @@
 export const convertMillisecondsToTime = (ms: number): string => {
+  ms *= 10
   const milliseconds = Math.floor((ms % 1000) / 10);
   const seconds = Math.floor((ms / 1000) % 60);
   const minutes = Math.floor((ms / (1000 * 60)) % 60);

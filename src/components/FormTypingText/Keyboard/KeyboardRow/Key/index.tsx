@@ -2,6 +2,7 @@ import {
   Typography,
   SxProps,
   Box,
+  useTheme,
 } from "@mui/material";
 import { FC } from "react";
 
@@ -12,6 +13,7 @@ interface IKeyProps {
 }
 
 const Key: FC<IKeyProps> = ({ content, flexGrow, active }) => {
+  const theme = useTheme()
   const key: SxProps = {
     textAlign: "center",
     padding: "3px",
@@ -24,7 +26,7 @@ const Key: FC<IKeyProps> = ({ content, flexGrow, active }) => {
   };
 
   const keyActive: SxProps = {
-    background: "#dfe1edbd",
+    background: theme.palette.primary.light
   };
 
   const keyStyles: SxProps = active ? { ...key, ...keyActive } : key;

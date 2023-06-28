@@ -11,7 +11,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import PrintableText from "./PrintableText/index";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { timerActions } from "../../store/slices/timerSlice";
+import {
+  setDateTimeFinish,
+  setDateTimeStart,
+  startStopTimer,
+} from "../../store/slices/timerSlice";
 import Statistics from "./Statistics";
 import { setCurrentSymbol } from "../../store/slices/keyboardSlice";
 import {
@@ -33,7 +37,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
     alignItems: "center",
     width: "100%",
     gap: "20px",
-    marginTop: "20px"
+    marginTop: "20px",
   };
   const inputWord: SxProps = {
     maxWidth: "400px",
@@ -80,12 +84,11 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
 
   const stopTimerAndShowStats = () => {
     setShowStats(true);
-    dispatch(timerActions.startStopTimer());
+    dispatch(startStopTimer());
   };
 
   const onInputStart = (value: string) => {
-    if (!timerIsStarted && value.length === 1)
-      dispatch(timerActions.startStopTimer());
+    if (!timerIsStarted && value.length === 1) dispatch(startStopTimer());
   };
 
   const handlerInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -153,7 +156,14 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
           {keyboardActive && <Keyboard />}
         </>
       ) : (
-        <Statistics />
+        <Statistics
+          closeStatistic={() => {
+            setShowStats(false);
+            setDateTimeStart(0);
+            setDateTimeFinish(0);
+            setMistakes(0);
+          }}
+        />
       )}
     </Box>
   );
