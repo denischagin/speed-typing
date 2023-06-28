@@ -1,8 +1,7 @@
 import { IText } from "../types/IText";
 import { TextTypeEnum } from "../types/TextTypeEnum";
 
-const URL =
-  "https://fish-text.ru/get";
+const URL = "https://fish-text.ru/get";
 
 export class TextService {
   static async getText(type: TextTypeEnum, number: number): Promise<any> {

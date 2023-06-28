@@ -15,9 +15,8 @@ const header: SxProps = {
 };
 
 const Header: FC<HeaderProps> = ({}) => {
-  const dispatch = useAppDispatch();
-
   const { mistakesCount } = useAppSelector((state) => state.mistakes);
+
   return (
     <Box component="header" sx={header}>
       <Typography
@@ -26,11 +25,12 @@ const Header: FC<HeaderProps> = ({}) => {
           flexGrow: 1,
         }}
       >
-        Количество ошибок: {mistakesCount}
+        Количество ошибок: <Typography component="span" fontWeight="bold">{mistakesCount}</Typography>
       </Typography>
 
       <Timer />
-      {/* <Button variant='outlined' onClick={() => dispatch(timerActions.startStopTimer())}>Начать печатать</Button> */}
+
+
     </Box>
   );
 };

@@ -1,5 +1,6 @@
 import React, { FC, Fragment } from "react";
 import { makeStyles, SxProps, Typography } from "@mui/material";
+import Word from "./Word";
 
 interface IPrintableTextProps {
   words: string[];
@@ -38,22 +39,14 @@ const PrintableText: FC<IPrintableTextProps> = ({
   return (
     <Typography variant="body1" sx={commonText}>
       {words.map((word, index) =>
-        index === currentWordIndex ? (
-          <Typography
-            component="span"
-            key={index}
-            sx={
-              !isError ? spanPrintedText : { ...spanPrintedText, ...errorText }
-            }
-          >
-            {word}{" "}
-          </Typography>
-        ) : (
-          <Typography component="span" key={index} sx={spanText}>
-            {word}{" "}
-          </Typography>
-        )
-      )}
+        <Word 
+					currentWordIndex={currentWordIndex} 
+					index={index}
+					isError={isError}
+				>
+					{word}
+				</Word>
+			)}
     </Typography>
   );
 };
