@@ -16,6 +16,7 @@ const Header: FC<HeaderProps> = ({}) => {
   };
 
   const { mistakesCount } = useAppSelector((state) => state.mistakes);
+  console.log(mistakesCount)
 
   return (
     <AppBar position="static">

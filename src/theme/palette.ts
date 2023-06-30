@@ -1,4 +1,5 @@
 import { PaletteColorOptions, createTheme } from "@mui/material";
+import { green } from "@mui/material/colors";
 
 const RED = {
   "50": "#f8e6e5",
@@ -51,6 +52,10 @@ export const createCustomTheme = () => {
         contrastText: RED.contrastText,
         dark: RED[700],
       },
+      success: {
+        main: green[400],
+        light: green[100]
+      }
     },
   });
 };

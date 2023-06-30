@@ -4,6 +4,7 @@ import { useAppSelector } from "../../../hooks/redux";
 import keyboardIcon from "../../../assets/keyboard-icon.svg";
 import speedIcon from "../../../assets/speed-icon.svg";
 import errorIcon from "../../../assets/error-icon.svg";
+import { convertMillisecondsToTime } from "../../../helpers/convertMillisecondsToTime";
 
 interface StatisticsProps {
   closeStatistic: () => void;
@@ -13,6 +14,7 @@ const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
   const theme = useTheme();
 
   const { mistakesCount } = useAppSelector((state) => state.mistakes);
+  const { timer } = useAppSelector((state) => state.timer);
   const { printSpeedLetterPerMinute, printSpeedWordsPerMinute } =
     useAppSelector((state) => state.statatistics);
 
@@ -42,7 +44,7 @@ const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
           component="img"
           src={speedIcon}
           sx={{
-            width: "20%",
+            width: "150px",
           }}
         />
 
@@ -67,7 +69,7 @@ const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
           src={keyboardIcon}
           color="red"
           sx={{
-            width: "20%",
+            width: "150px",
           }}
         />
       </Box>
@@ -76,8 +78,8 @@ const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
         sx={{
           display: "flex",
           alignItems: "center",
-          flexGrow: 1,
           height: "300px",
+          gap: "10px",
           marginTop: "10px",
           borderRadius: "10px",
         }}
@@ -86,31 +88,43 @@ const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
           sx={{
             display: "flex",
             alignItems: "center",
+            justifyContent: "center",
             height: "300px",
             marginTop: "10px",
             width: "50%",
             borderRadius: "10px",
+            backgroundColor: theme.palette.error.light,
           }}
         >
-          <Box
-            component="img"
-            src={errorIcon}
-            sx={{
-              width: "200px"
-            }}
-          />
+          <Typography
+            variant="h4"
+            component="p"
+            color={theme.palette.text.primary}
+          >
+            Ошибки: {mistakesCount}
+          </Typography>
         </Box>
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
+            justifyContent: "center",
             flexGrow: 1,
             height: "300px",
             width: "50%",
             marginTop: "10px",
             borderRadius: "10px",
+            backgroundColor: theme.palette.success.light,
           }}
-        ></Box>
+        >
+          <Typography
+            variant="h4"
+            component="p"
+            color={theme.palette.text.primary}
+          >
+            Время: {convertMillisecondsToTime(timer)}
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );

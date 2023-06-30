@@ -3,14 +3,12 @@ import { PayloadAction } from "@reduxjs/toolkit";
 
 interface ITimerState {
   timerIsStarted: boolean;
-  dateTimerStart: number;
-  dateTimerFinish: number;
+  timer: number
 }
 
 const initialState: ITimerState = {
   timerIsStarted: false,
-  dateTimerFinish: 0,
-  dateTimerStart: 0,
+  timer: 0,
 };
 
 const timerSlice = createSlice({
@@ -21,20 +19,16 @@ const timerSlice = createSlice({
       state.timerIsStarted = !state.timerIsStarted;
     },
 
-    setDateTimeStart(state, action: PayloadAction<number>) {
-      {
-        state.dateTimerStart = action.payload;
-      }
+    tick(state) {
+      state.timer += 1
     },
 
-    setDateTimeFinish(state, action: PayloadAction<number>) {
-      {
-        state.dateTimerFinish = action.payload;
-      }
-    },
+    setTimer(state, action: PayloadAction<number>) {
+      state.timer = action.payload
+    }
   },
 });
 
 export default timerSlice.reducer;
-export const { setDateTimeFinish, setDateTimeStart, startStopTimer } =
+export const { startStopTimer, tick, setTimer } =
   timerSlice.actions;

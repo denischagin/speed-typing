@@ -1,21 +1,7 @@
-import {
-  useState,
-  Fragment,
-  useRef,
-  useEffect,
-  FC,
-  DOMElement,
-  ChangeEvent,
-  ChangeEventHandler,
-} from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, useRef, useEffect, FC } from "react";
 import PrintableText from "./PrintableText/index";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import {
-  setDateTimeFinish,
-  setDateTimeStart,
-  startStopTimer,
-} from "../../store/slices/timerSlice";
+import { setTimer, startStopTimer } from "../../store/slices/timerSlice";
 import Statistics from "./Statistics";
 import { setCurrentSymbol } from "../../store/slices/keyboardSlice";
 import {
@@ -24,6 +10,7 @@ import {
 } from "../../store/slices/mistakesSlice";
 import { Box, SxProps, TextField, Button } from "@mui/material";
 import Keyboard from "./Keyboard";
+import { useText } from "../../context/textContext";
 
 interface IFormTypingTextProps {
   printingText: string;
@@ -45,7 +32,6 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   };
 
   const dispatch = useAppDispatch();
-
   const textFieldInputRef = useRef<HTMLInputElement>(null);
 
   const [showStats, setShowStats] = useState(false);
@@ -57,6 +43,9 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   const [keyboardActive, setKeyboardActive] = useState(false);
 
   const { timerIsStarted } = useAppSelector((state) => state.timer);
+  const { textNumber, textType } = useAppSelector((state) => state.statatistics);
+
+  const { getNewText } = useText();
 
   useEffect(() => {
     if (timerIsStarted) {
@@ -159,9 +148,10 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
         <Statistics
           closeStatistic={() => {
             setShowStats(false);
-            setDateTimeStart(0);
-            setDateTimeFinish(0);
-            setMistakes(0);
+            setCurrentWordIndex(0);
+            dispatch(setMistakes(0));
+            dispatch(setTimer(0));
+            getNewText(textType, textNumber)
           }}
         />
       )}

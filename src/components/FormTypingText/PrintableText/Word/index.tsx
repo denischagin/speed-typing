@@ -42,7 +42,7 @@ const Word: FC<WordProps> = ({
   return (
     <Typography
       component="span"
-      color={currentWordIndex > index ? theme.palette.grey[600] : null}
+      color={currentWordIndex > index ? theme.palette.grey[400] : undefined}
       key={index}
       sx={wordStyle}
     >
