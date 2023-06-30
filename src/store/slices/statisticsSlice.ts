@@ -21,7 +21,7 @@ const initialState: IStatsState = {
   printSpeedWordsPerMinute: null,
   countLetters: null,
   countWords: null,
-  textType: TextTypeEnum.SENTENCE,
+  textType: TextTypeEnum.PARAGRAPH,
   textNumber: 1,
   text: "",
   isLoading: false,
