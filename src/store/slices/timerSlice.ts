@@ -19,6 +19,10 @@ const timerSlice = createSlice({
       state.timerIsStarted = !state.timerIsStarted;
     },
 
+    stopTimer(state) {
+      state.timerIsStarted = false;
+    },
+
     tick(state) {
       state.timer += 1
     },
@@ -30,5 +34,5 @@ const timerSlice = createSlice({
 });
 
 export default timerSlice.reducer;
-export const { startStopTimer, tick, setTimer } =
+export const { startStopTimer, stopTimer, tick, setTimer } =
   timerSlice.actions;

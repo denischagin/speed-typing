@@ -11,6 +11,7 @@ import {
 import { Box, SxProps, TextField, Button } from "@mui/material";
 import Keyboard from "./Keyboard";
 import { useText } from "../../context/textContext";
+import { fetchText } from "../../store/asyncActions/fetchText";
 
 interface IFormTypingTextProps {
   printingText: string;
@@ -43,7 +44,9 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   const [keyboardActive, setKeyboardActive] = useState(false);
 
   const { timerIsStarted } = useAppSelector((state) => state.timer);
-  const { textNumber, textType } = useAppSelector((state) => state.statatistics);
+  const { textNumber, textType } = useAppSelector(
+    (state) => state.statatistics
+  );
 
   const { getNewText } = useText();
 
@@ -151,7 +154,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
             setCurrentWordIndex(0);
             dispatch(setMistakes(0));
             dispatch(setTimer(0));
-            getNewText(textType, textNumber)
+            dispatch(fetchText({ textType, textNumber }));
           }}
         />
       )}

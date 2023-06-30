@@ -28,10 +28,9 @@ const Timer = () => {
   };
 
   const stopTimer = () => {
-    if (timer === 0) return;
+    clearInterval(timerRef.current);
 
     dispatch(calcSpeed(timer));
-    clearInterval(timerRef.current);
   };
 
   return (

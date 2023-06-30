@@ -6,16 +6,13 @@ import "./index.css";
 import { store } from "./store/index";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { createCustomTheme } from "./theme/palette";
-import TextProvider from "./providers/TextProvider";
 
 const theme = createCustomTheme();
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <ThemeProvider theme={theme}>
     <Provider store={store}>
-      <TextProvider>
-        <App />
-      </TextProvider>
+      <App />
     </Provider>
   </ThemeProvider>
 );

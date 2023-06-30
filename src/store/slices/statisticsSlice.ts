@@ -22,7 +22,7 @@ const initialState: IStatsState = {
   countLetters: null,
   countWords: null,
   textType: TextTypeEnum.SENTENCE,
-  textNumber: 3,
+  textNumber: 1,
   text: "",
   isLoading: false,
   error: "",
@@ -76,4 +76,4 @@ const statatisticsSlice = createSlice({
 });
 
 export default statatisticsSlice.reducer;
-export const { calcSpeed } = statatisticsSlice.actions;
+export const { calcSpeed, setTypeAndNumberText } = statatisticsSlice.actions;
