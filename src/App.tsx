@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import "./App.css";
-import { Container, Typography } from "@mui/material";
+import { Container, LinearProgress, Typography } from "@mui/material";
 import Header from "./components/Header/index";
 import { useAppDispatch, useAppSelector } from "./hooks/redux";
 import { fetchText } from "./store/asyncActions/fetchText";
@@ -25,7 +25,7 @@ const App = () => {
       <Header {...headerProps} />
       <Container>
         {isLoading ? (
-          <Typography variant="h4">Загрузка</Typography>
+          <LinearProgress sx={{ marginTop: "10px" }} />
         ) : (
           <FormTypingText printingText={text} />
         )}

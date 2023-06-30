@@ -3,6 +3,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { IText } from "../../types/IText";
 import { fetchText } from "../asyncActions/fetchText";
 import { TextTypeEnum } from "../../types/TextTypeEnum";
+import { validateText } from "../../helpers/validateText";
 
 interface IStatsState {
   printSpeedLetterPerMinute: number | null;
@@ -50,9 +51,9 @@ const statatisticsSlice = createSlice({
         textNumber: number;
       }>
     ) {
-			state.textType = action.payload.textType,
-			state.textNumber = action.payload.textNumber
-		},
+      (state.textType = action.payload.textType),
+        (state.textNumber = action.payload.textNumber);
+    },
   },
 
   extraReducers: (builder) => {
@@ -63,8 +64,10 @@ const statatisticsSlice = createSlice({
       .addCase(fetchText.fulfilled, (state, action: PayloadAction<IText>) => {
         state.isLoading = false;
 
-        state.text = action.payload.text;
+        const text = validateText(action.payload.text);
 
+        state.text = text;
+        
         state.countLetters = state.text.length;
         state.countWords = state.text.split(" ").length;
       })
