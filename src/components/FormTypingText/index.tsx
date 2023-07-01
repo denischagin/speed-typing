@@ -12,6 +12,7 @@ import { Box, SxProps, TextField, Button } from "@mui/material";
 import Keyboard from "./Keyboard";
 import { useText } from "../../context/textContext";
 import { fetchText } from "../../store/asyncActions/fetchText";
+import LoadText from "./LoadText/LoadText";
 
 interface IFormTypingTextProps {
   printingText: string;
@@ -119,6 +120,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
     <Box sx={formTypingTextWrapper}>
       {!showStats ? (
         <>
+          <LoadText />
           <PrintableText
             currentWordIndex={currentWordIndex}
             words={words}

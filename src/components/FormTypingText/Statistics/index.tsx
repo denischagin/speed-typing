@@ -3,8 +3,8 @@ import React, { FC } from "react";
 import { useAppSelector } from "../../../hooks/redux";
 import keyboardIcon from "../../../assets/keyboard-icon.svg";
 import speedIcon from "../../../assets/speed-icon.svg";
-import errorIcon from "../../../assets/error-icon.svg";
 import { convertMillisecondsToTime } from "../../../helpers/convertMillisecondsToTime";
+import { useTypingSpeed } from "../../../hooks/useTypingSpeed";
 
 interface StatisticsProps {
   closeStatistic: () => void;
@@ -15,9 +15,11 @@ const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
 
   const { mistakesCount } = useAppSelector((state) => state.mistakes);
   const { timer } = useAppSelector((state) => state.timer);
-  const { printSpeedLetterPerMinute, printSpeedWordsPerMinute } =
-    useAppSelector((state) => state.statatistics);
 
+  const { text } = useAppSelector((state) => state.statatistics);
+
+  const { printSpeedLetterPerMinute, printSpeedWordsPerMinute } =
+    useTypingSpeed(timer, text);
   return (
     <Box
       sx={{
@@ -26,7 +28,9 @@ const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
     >
       <Typography variant="h2">Статистика</Typography>
 
-      <Button onClick={closeStatistic}>Продолжить печатать</Button>
+      <Button onClick={closeStatistic}>
+        Начать печатать новый рандомный текст
+      </Button>
 
       <Box
         sx={{

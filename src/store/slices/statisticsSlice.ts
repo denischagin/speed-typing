@@ -4,44 +4,38 @@ import { IText } from "../../types/IText";
 import { fetchText } from "../asyncActions/fetchText";
 import { TextTypeEnum } from "../../types/TextTypeEnum";
 import { validateText } from "../../helpers/validateText";
+import { IHistoryStatistic } from "../../types/IHistoryStatistic";
 
 interface IStatsState {
   printSpeedLetterPerMinute: number | null;
   printSpeedWordsPerMinute: number | null;
-  countWords: number | null;
-  countLetters: number | null;
   textType: TextTypeEnum;
   textNumber: number;
   text: string;
   isLoading: boolean;
   error: string | unknown;
+  history: IHistoryStatistic[]
 }
 
 const initialState: IStatsState = {
   printSpeedLetterPerMinute: null,
   printSpeedWordsPerMinute: null,
-  countLetters: null,
-  countWords: null,
   textType: TextTypeEnum.PARAGRAPH,
   textNumber: 1,
   text: "",
   isLoading: false,
   error: "",
+  history: []
 };
 
 const statatisticsSlice = createSlice({
   initialState,
   name: "statistics",
   reducers: {
-    calcSpeed(state, action: PayloadAction<number>) {
-      const minutes = action.payload / 6000;
+    setText(state, action: PayloadAction<string>) {
+      const text = validateText(action.payload);
 
-      if (!state.countLetters || !state.countWords) return;
-
-      state.printSpeedLetterPerMinute = Math.floor(
-        state.countLetters / minutes
-      );
-      state.printSpeedWordsPerMinute = Math.floor(state.countWords / minutes);
+      state.text = text;
     },
 
     setTypeAndNumberText(
@@ -51,8 +45,8 @@ const statatisticsSlice = createSlice({
         textNumber: number;
       }>
     ) {
-      (state.textType = action.payload.textType),
-        (state.textNumber = action.payload.textNumber);
+      state.textType = action.payload.textType,
+      state.textNumber = action.payload.textNumber;
     },
   },
 
@@ -63,13 +57,10 @@ const statatisticsSlice = createSlice({
       })
       .addCase(fetchText.fulfilled, (state, action: PayloadAction<IText>) => {
         state.isLoading = false;
-
         const text = validateText(action.payload.text);
 
         state.text = text;
-        
-        state.countLetters = state.text.length;
-        state.countWords = state.text.split(" ").length;
+      
       })
       .addCase(fetchText.rejected, (state, action) => {
         state.isLoading = false;
@@ -79,4 +70,4 @@ const statatisticsSlice = createSlice({
 });
 
 export default statatisticsSlice.reducer;
-export const { calcSpeed, setTypeAndNumberText } = statatisticsSlice.actions;
+export const { setTypeAndNumberText, setText } = statatisticsSlice.actions;
