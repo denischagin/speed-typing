@@ -3,24 +3,33 @@ import { PayloadAction } from "@reduxjs/toolkit";
 
 interface ITimerState {
   timerIsStarted: boolean;
-  timer: number
+  timer: number;
+  dateStart: number;
 }
 
 const initialState: ITimerState = {
   timerIsStarted: false,
   timer: 0,
+  dateStart: 0,
 };
 
 const timerSlice = createSlice({
   initialState,
   name: "timer",
   reducers: {
-    startStopTimer(state) {
+    startTimer(state) {
       state.timerIsStarted = !state.timerIsStarted;
+      state.dateStart = Date.now();
     },
 
     stopTimer(state) {
       state.timerIsStarted = false;
+      state.dateStart = 0;
+      state.timer = 0
+    },
+
+    tick(state) {
+      state.timer = (Date.now() - state.dateStart)/10
     },
 
     setTimer(state, action: PayloadAction<number>) {
@@ -30,5 +39,5 @@ const timerSlice = createSlice({
 });
 
 export default timerSlice.reducer;
-export const { startStopTimer, stopTimer, setTimer } =
+export const { startTimer, stopTimer, setTimer, tick } =
   timerSlice.actions;
