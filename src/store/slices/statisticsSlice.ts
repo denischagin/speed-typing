@@ -33,9 +33,7 @@ const statatisticsSlice = createSlice({
   name: "statistics",
   reducers: {
     setText(state, action: PayloadAction<string>) {
-      const text = validateText(action.payload);
-
-      state.text = text;
+      state.text = action.payload;
     },
 
     setTypeAndNumberText(
