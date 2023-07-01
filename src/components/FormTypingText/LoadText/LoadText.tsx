@@ -37,7 +37,7 @@ const LoadText = () => {
 
   const handleLoadText = () => {
     if (textValue.trim().length === 0) return handleOpenErrorSnackbar();
-    dispatch(setText(textValue));
+    dispatch(setText(textValue.trim()));
     dispatch(stopTimer());
     dispatch(setTimer(0));
 
