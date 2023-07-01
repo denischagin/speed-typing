@@ -23,10 +23,6 @@ const timerSlice = createSlice({
       state.timerIsStarted = false;
     },
 
-    tick(state) {
-      state.timer += 1
-    },
-
     setTimer(state, action: PayloadAction<number>) {
       state.timer = action.payload
     }
@@ -34,5 +30,5 @@ const timerSlice = createSlice({
 });
 
 export default timerSlice.reducer;
-export const { startStopTimer, stopTimer, tick, setTimer } =
+export const { startStopTimer, stopTimer, setTimer } =
   timerSlice.actions;

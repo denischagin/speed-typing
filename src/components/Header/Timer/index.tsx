@@ -4,12 +4,14 @@ import { useSelector } from "react-redux";
 import { useAppSelector } from "../../../hooks/redux";
 import { useAppDispatch } from "./../../../hooks/redux";
 import { convertMillisecondsToTime } from "../../../helpers/convertMillisecondsToTime";
-import { tick } from "../../../store/slices/timerSlice";
+import { setTimer } from "../../../store/slices/timerSlice";
 
 const Timer = () => {
   const timerRef = useRef(0);
 
   const { timerIsStarted, timer } = useAppSelector((state) => state.timer);
+
+  const [timerCount, setTimerCount] = useState(0)
 
   const dispatch = useAppDispatch();
 
@@ -22,18 +24,19 @@ const Timer = () => {
     clearInterval(timerRef.current);
 
     timerRef.current = setInterval(() => {
-      dispatch(tick());
+      setTimerCount(prev => prev + 1)
     }, 10);
   };
 
   const stopTimer = () => {
+    dispatch(setTimer(timerCount))
     clearInterval(timerRef.current)
   };
 
   return (
     <div>
       <Typography variant="subtitle1">
-        Время: {convertMillisecondsToTime(timer)}
+        Время: {convertMillisecondsToTime(timerCount)}
       </Typography>
     </div>
   );
