@@ -10,7 +10,6 @@ import {
 } from "../../store/slices/mistakesSlice";
 import { Box, SxProps, TextField, Button } from "@mui/material";
 import Keyboard from "./Keyboard";
-import { useText } from "../../context/textContext";
 import { fetchText } from "../../store/asyncActions/fetchText";
 import LoadText from "./LoadText/LoadText";
 
@@ -48,7 +47,6 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
     (state) => state.statatistics
   );
 
-  const { getNewText } = useText();
 
   useEffect(() => {
     if (timerIsStarted) {
@@ -57,7 +55,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   }, [timerIsStarted]);
 
   useEffect(() => {
-    if (printingText == "") return;
+    if (printingText.trim() == "") return;
     startNewText();
   }, [printingText]);
 
@@ -85,7 +83,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   };
 
   const onInputStart = (value: string) => {
-    if (!timerIsStarted && value.length === 1) dispatch(startTimer());
+    if (!timerIsStarted && value.length >= 1) dispatch(startTimer());
   };
 
   const handlerInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

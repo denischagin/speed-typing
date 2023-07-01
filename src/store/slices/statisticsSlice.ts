@@ -33,7 +33,7 @@ const statatisticsSlice = createSlice({
   name: "statistics",
   reducers: {
     setText(state, action: PayloadAction<string>) {
-      state.text = action.payload.trim();
+      state.text = action.payload;
     },
 
     setTypeAndNumberText(
