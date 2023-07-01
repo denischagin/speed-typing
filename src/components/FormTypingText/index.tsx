@@ -55,7 +55,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   }, [timerIsStarted]);
 
   useEffect(() => {
-    if (printingText.trim() == "") return;
+    if (printingText == "") return;
     startNewText();
   }, [printingText]);
 
