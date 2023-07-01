@@ -38,9 +38,8 @@ const LoadText = () => {
   const handleLoadText = () => {
     if (textValue.trim().length === 0) return handleOpenErrorSnackbar();
     dispatch(setText(textValue.trim()));
-    dispatch(stopTimer());
     dispatch(setTimer(0));
-
+    setTextValue("")
     handleCloseModal();
     handleOpenSuccessSnackbar();
   };
@@ -103,7 +102,6 @@ const LoadText = () => {
               value={textValue}
               onChange={(e) => setTextValue(e.target.value)}
               rows={5}
-              maxRows={40}
               multiline
             />
             <Button variant="outlined" onClick={handleLoadText}>

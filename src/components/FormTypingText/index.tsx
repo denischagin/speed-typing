@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, FC } from "react";
 import PrintableText from "./PrintableText/index";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { setTimer, startTimer } from "../../store/slices/timerSlice";
+import { setTimer, startTimer, stopTimer } from "../../store/slices/timerSlice";
 import Statistics from "./Statistics";
 import { setCurrentSymbol } from "../../store/slices/keyboardSlice";
 import {
@@ -72,7 +72,8 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
     setValue("");
     setIsErrorInput(false);
     setCurrentWordIndex(0);
-    dispatch(setTimer(0));
+    dispatch(setTimer(0))
+    dispatch(stopTimer());
     dispatch(setCurrentSymbol(newWords[0][0]));
     dispatch(setMistakes(0));
   };
