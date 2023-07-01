@@ -41,7 +41,6 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   const [isErrorInput, setIsErrorInput] = useState(false);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [words, setWords] = useState<string[]>([]);
-  const [statsPage, setStatsPage] = useState(false);
   const [keyboardActive, setKeyboardActive] = useState(false);
 
   const { timerIsStarted } = useAppSelector((state) => state.timer);
@@ -72,7 +71,10 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   const startNewText = () => {
     const newWords = printingText.split(" ");
     setWords(newWords);
+    setValue('')
+    setIsErrorInput(false)
     dispatch(setCurrentSymbol(newWords[0][0]));
+    dispatch(setMistakes(0))
   };
 
   const stopTimerAndShowStats = () => {

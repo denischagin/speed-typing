@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import { useAppDispatch } from "../../../hooks/redux";
 import { setText } from "../../../store/slices/statisticsSlice";
 import { Box, Button, Modal, SxProps, TextField, Typography, useTheme } from "@mui/material";
 import SnackbarWithAlert from "../../SnackbarWithAlert/SnackbarWithAlert";
+import { setTimer, stopTimer } from "../../../store/slices/timerSlice";
 
 const LoadText = () => {
   const palette = useTheme().palette;
@@ -31,7 +32,9 @@ const LoadText = () => {
   const handleLoadText = () => {
     if (textValue.length === 0) return handleOpenErrorSnackbar();
     dispatch(setText(textValue));
-
+    dispatch(stopTimer())
+    dispatch(setTimer(0))
+    
     handleCloseModal();
     handleOpenSuccessSnackbar();
   };
