@@ -71,10 +71,12 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   const startNewText = () => {
     const newWords = printingText.split(" ");
     setWords(newWords);
-    setValue('')
-    setIsErrorInput(false)
+    setValue("");
+    setIsErrorInput(false);
+    setCurrentWordIndex(0);
+    dispatch(setTimer(0));
     dispatch(setCurrentSymbol(newWords[0][0]));
-    dispatch(setMistakes(0))
+    dispatch(setMistakes(0));
   };
 
   const stopTimerAndShowStats = () => {
@@ -155,9 +157,6 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
         <Statistics
           closeStatistic={() => {
             setShowStats(false);
-            setCurrentWordIndex(0);
-            dispatch(setMistakes(0));
-            dispatch(setTimer(0));
             dispatch(fetchText({ textType, textNumber }));
           }}
         />

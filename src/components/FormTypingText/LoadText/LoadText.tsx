@@ -1,7 +1,15 @@
 import React, { FC, useState } from "react";
 import { useAppDispatch } from "../../../hooks/redux";
 import { setText } from "../../../store/slices/statisticsSlice";
-import { Box, Button, Modal, SxProps, TextField, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Modal,
+  SxProps,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import SnackbarWithAlert from "../../SnackbarWithAlert/SnackbarWithAlert";
 import { setTimer, stopTimer } from "../../../store/slices/timerSlice";
 
@@ -13,8 +21,6 @@ const LoadText = () => {
   const [openSuccessSnackbar, setOpenSuccessSnackbar] = useState(false);
   const [textValue, setTextValue] = useState("");
 
-
-  
   const modalContent: SxProps = {
     position: "absolute" as "absolute",
     top: "50%",
@@ -32,9 +38,9 @@ const LoadText = () => {
   const handleLoadText = () => {
     if (textValue.length === 0) return handleOpenErrorSnackbar();
     dispatch(setText(textValue));
-    dispatch(stopTimer())
-    dispatch(setTimer(0))
-    
+    dispatch(stopTimer());
+    dispatch(setTimer(0));
+
     handleCloseModal();
     handleOpenSuccessSnackbar();
   };
