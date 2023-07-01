@@ -33,7 +33,7 @@ const statatisticsSlice = createSlice({
   name: "statistics",
   reducers: {
     setText(state, action: PayloadAction<string>) {
-      state.text = action.payload;
+      state.text = action.payload.replace(/\s+/g, " ");;
     },
 
     setTypeAndNumberText(
