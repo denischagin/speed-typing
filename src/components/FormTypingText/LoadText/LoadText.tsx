@@ -36,7 +36,7 @@ const LoadText = () => {
   const dispatch = useAppDispatch();
 
   const handleLoadText = () => {
-    if (textValue.length === 0) return handleOpenErrorSnackbar();
+    if (textValue.trim().length === 0) return handleOpenErrorSnackbar();
     dispatch(setText(textValue));
     dispatch(stopTimer());
     dispatch(setTimer(0));
