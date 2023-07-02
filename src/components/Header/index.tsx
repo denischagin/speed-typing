@@ -14,7 +14,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, MouseEventHandler, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import Timer from "./Timer/index";
 import { TextTypeEnum } from "../../types/TextTypeEnum";
@@ -27,6 +27,7 @@ import { setMistakes } from "../../store/slices/mistakesSlice";
 import SnackbarWithAlert from "../SnackbarWithAlert/SnackbarWithAlert";
 import { useLocation, useNavigate } from "react-router";
 import { routesEnum } from "../../types/routesEnum";
+import { fetchText } from "../../store/asyncActions/fetchText";
 
 interface HeaderProps {
   textType: TextTypeEnum;
@@ -67,12 +68,15 @@ const Header: FC<HeaderProps> = ({}) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const path = location.pathname
+  const path = location.pathname;
 
   const button = {
-    text: path === routesEnum.TYPING ? "Посмотреть все попытки" : "Вернуться обратно",
-    to: path === routesEnum.TYPING ? routesEnum.HISTORY : routesEnum.TYPING
-  }
+    text:
+      path === routesEnum.TYPING
+        ? "Посмотреть все попытки"
+        : "Вернуться обратно",
+    to: path === routesEnum.TYPING ? routesEnum.HISTORY : routesEnum.TYPING,
+  };
 
   const { mistakesCount } = useAppSelector((state) => state.mistakes);
   const { timer, timerIsStarted } = useAppSelector((state) => state.timer);
@@ -101,11 +105,19 @@ const Header: FC<HeaderProps> = ({}) => {
     timerIsStarted && handleTimerIsStarted();
   };
 
+  const handleButtonNewText: MouseEventHandler<HTMLButtonElement> = (e) => {
+    dispatch(fetchText({textNumber, textType}))
+  }
+
   return (
     <AppBar position="static">
       <Toolbar sx={toolbar}>
         <Button
-          onClick={() => navigate(button.to, { replace: true })}
+          onClick={() => {
+            navigate(button.to, { replace: true });
+            if (button.to === routesEnum.TYPING)
+              dispatch(fetchText({ textType, textNumber }));
+          }}
           variant="contained"
         >
           {button.text}
@@ -159,6 +171,9 @@ const Header: FC<HeaderProps> = ({}) => {
               </MenuItem>
             ))}
           </Select>
+          <Button variant="contained" onClick={handleButtonNewText}>
+            Другой текст
+          </Button>
         </Box>
 
         <Timer />
