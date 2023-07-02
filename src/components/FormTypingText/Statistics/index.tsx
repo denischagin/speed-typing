@@ -1,10 +1,11 @@
 import { Box, Button, Typography, useTheme } from "@mui/material";
-import React, { FC } from "react";
-import { useAppSelector } from "../../../hooks/redux";
+import React, { FC, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import keyboardIcon from "../../../assets/keyboard-icon.svg";
 import speedIcon from "../../../assets/speed-icon.svg";
 import { convertMillisecondsToTime } from "../../../helpers/convertMillisecondsToTime";
 import { useTypingSpeed } from "../../../hooks/useTypingSpeed";
+import { addTypingHistory } from "../../../store/slices/statisticsSlice";
 
 interface StatisticsProps {
   closeStatistic: () => void;
@@ -13,6 +14,8 @@ interface StatisticsProps {
 const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
   const theme = useTheme();
 
+  const dispatch = useAppDispatch();
+
   const { mistakesCount } = useAppSelector((state) => state.mistakes);
   const { timer } = useAppSelector((state) => state.timer);
 
@@ -20,6 +23,18 @@ const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
 
   const { printSpeedLetterPerMinute, printSpeedWordsPerMinute } =
     useTypingSpeed(timer, text);
+
+  useEffect(() => {
+    dispatch(
+      addTypingHistory({
+        id: Date.now(),
+        printSpeedLetterPerMinute,
+        printSpeedWordsPerMinute,
+        text,
+      })
+    );
+  }, []);
+
   return (
     <Box
       sx={{

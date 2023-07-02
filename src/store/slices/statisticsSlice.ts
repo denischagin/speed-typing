@@ -46,6 +46,10 @@ const statatisticsSlice = createSlice({
       state.textType = action.payload.textType,
       state.textNumber = action.payload.textNumber;
     },
+
+    addTypingHistory(state, action: PayloadAction<IHistoryStatistic>) {
+      state.history.push(action.payload)
+    }
   },
 
   extraReducers: (builder) => {
@@ -68,4 +72,4 @@ const statatisticsSlice = createSlice({
 });
 
 export default statatisticsSlice.reducer;
-export const { setTypeAndNumberText, setText } = statatisticsSlice.actions;
+export const { setTypeAndNumberText, setText, addTypingHistory } = statatisticsSlice.actions;

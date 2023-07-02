@@ -80,7 +80,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
 
   const stopTimerAndShowStats = () => {
     setShowStats(true);
-    dispatch(startTimer());
+    dispatch(stopTimer());
   };
 
   const onInputStart = (value: string) => {

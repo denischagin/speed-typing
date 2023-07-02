@@ -25,6 +25,8 @@ import {
 import { setTimer, stopTimer } from "../../store/slices/timerSlice";
 import { setMistakes } from "../../store/slices/mistakesSlice";
 import SnackbarWithAlert from "../SnackbarWithAlert/SnackbarWithAlert";
+import { useLocation, useNavigate } from "react-router";
+import { routesEnum } from "../../types/routesEnum";
 
 interface HeaderProps {
   textType: TextTypeEnum;
@@ -33,7 +35,7 @@ interface HeaderProps {
 
 const Header: FC<HeaderProps> = ({}) => {
   const palette = useTheme().palette;
-  
+
   const toolbar: SxProps = {
     display: "flex",
     width: "100%",
@@ -63,13 +65,20 @@ const Header: FC<HeaderProps> = ({}) => {
   };
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const path = location.pathname
+
+  const button = {
+    text: path === routesEnum.TYPING ? "Посмотреть все попытки" : "Вернуться обратно",
+    to: path === routesEnum.TYPING ? routesEnum.HISTORY : routesEnum.TYPING
+  }
 
   const { mistakesCount } = useAppSelector((state) => state.mistakes);
   const { timer, timerIsStarted } = useAppSelector((state) => state.timer);
   const { textNumber, textType } = useAppSelector(
     (state) => state.statatistics
   );
-
 
   const handleTimerIsStarted = () => {
     dispatch(stopTimer());
@@ -95,6 +104,13 @@ const Header: FC<HeaderProps> = ({}) => {
   return (
     <AppBar position="static">
       <Toolbar sx={toolbar}>
+        <Button
+          onClick={() => navigate(button.to, { replace: true })}
+          variant="contained"
+        >
+          {button.text}
+        </Button>
+
         <Typography variant="body1">
           Количество ошибок:{" "}
           <Typography component="span" variant="h6">
@@ -144,8 +160,6 @@ const Header: FC<HeaderProps> = ({}) => {
             ))}
           </Select>
         </Box>
-
-
 
         <Timer />
       </Toolbar>

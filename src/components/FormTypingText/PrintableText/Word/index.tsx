@@ -27,7 +27,7 @@ const Word: FC<WordProps> = ({
     margin: "0px 2px",
     lineHeight: "1.4",
     borderRadius: "4px",
-    wordBreak: "break-all"
+      wordBreak: "break-all"
   };
   const errorText: SxProps = {
     backgroundColor: theme.palette.error.light,

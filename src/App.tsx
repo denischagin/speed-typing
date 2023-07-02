@@ -7,9 +7,13 @@ import { fetchText } from "./store/asyncActions/fetchText";
 import { TextTypeEnum } from "./types/TextTypeEnum";
 import FormTypingText from "./components/FormTypingText";
 import { Provider } from "react-redux";
+import { Route, Routes } from "react-router";
+import TypingPage from "./pages/TypingPage";
+import HistoryPage from "./pages/HistoryPage";
+import { routesEnum } from "./types/routesEnum";
 
 const App = () => {
-  const { isLoading, text, textType, textNumber } = useAppSelector(
+  const { textType, textNumber } = useAppSelector(
     (state) => state.statatistics
   );
   const dispatch = useAppDispatch();
@@ -23,13 +27,10 @@ const App = () => {
   return (
     <>
       <Header {...headerProps} />
-      <Container>
-        {isLoading ? (
-          <LinearProgress sx={{ marginTop: "10px" }} />
-        ) : (
-          <FormTypingText printingText={text} />
-        )}
-      </Container>
+      <Routes>
+        <Route path={routesEnum.TYPING} element={<TypingPage/>} />
+        <Route path={routesEnum.HISTORY} element={<HistoryPage/>} />
+      </Routes>
     </>
   );
 };

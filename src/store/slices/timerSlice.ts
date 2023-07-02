@@ -24,8 +24,6 @@ const timerSlice = createSlice({
 
     stopTimer(state) {
       state.timerIsStarted = false;
-      state.dateStart = 0;
-      state.timer = 0
     },
 
     tick(state) {
