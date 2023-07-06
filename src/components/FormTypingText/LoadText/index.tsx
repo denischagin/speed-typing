@@ -10,7 +10,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import SnackbarWithAlert from "../../SnackbarWithAlert/SnackbarWithAlert";
+import SnackbarWithAlert from "../../SnackbarWithAlert";
 import { setTimer, stopTimer } from "../../../store/slices/timerSlice";
 
 const LoadText = () => {

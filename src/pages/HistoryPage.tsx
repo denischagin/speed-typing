@@ -10,7 +10,7 @@ import {
   Modal,
   SxProps,
 } from "@mui/material";
-import HistoryItem from "../components/history/HistoryItem";
+import HistoryItem from "../components/HistoryItem";
 
 const HistoryPage = () => {
   const { history } = useAppSelector((state) => state.statistics);

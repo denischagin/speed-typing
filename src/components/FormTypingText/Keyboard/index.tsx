@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import Key from "./KeyboardRow/Key";
+import Key from "./Key";
 import KeyboardRow from "./KeyboardRow";
 import { Box, SxProps } from "@mui/material";
 import { keyboardRows } from "../../../constants/keyboardRows";

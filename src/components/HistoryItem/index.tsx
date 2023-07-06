@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Typography, IconButton, Modal, SxProps } from "@mui/material";
 import textIcon from "../../assets/text-icon.svg";
-import { IHistoryStatistic } from "./../../types/IHistoryStatistic";
+import { IHistoryStatistic } from "../../types/IHistoryStatistic";
 
 const modalContent: SxProps = {
   position: "absolute" as "absolute",

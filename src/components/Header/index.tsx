@@ -24,7 +24,7 @@ import {
 } from "../../store/slices/statisticsSlice";
 import { setTimer, stopTimer } from "../../store/slices/timerSlice";
 import { setMistakes } from "../../store/slices/mistakesSlice";
-import SnackbarWithAlert from "../SnackbarWithAlert/SnackbarWithAlert";
+import SnackbarWithAlert from "../SnackbarWithAlert";
 import { useLocation, useNavigate } from "react-router";
 import { routesEnum } from "../../types/routesEnum";
 import { fetchText } from "../../store/asyncActions/fetchText";

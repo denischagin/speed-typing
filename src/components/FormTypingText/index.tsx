@@ -29,11 +29,11 @@ import {
 } from "@mui/material";
 import Keyboard from "./Keyboard";
 import { fetchText } from "../../store/asyncActions/fetchText";
-import LoadText from "./LoadText/LoadText";
+import LoadText from "./LoadText";
 import { TextTypeEnum } from "../../types/TextTypeEnum";
 import { setTypeAndNumberText } from "../../store/slices/statisticsSlice";
 import Timer from "./Timer/index";
-import StatsSection from "./PrintableText/StatsSection/StatsSection";
+import StatsSection from "./PrintableText/StatsSection";
 
 interface IFormTypingTextProps {
   printingText: string;

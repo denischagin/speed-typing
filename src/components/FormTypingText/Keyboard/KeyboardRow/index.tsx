@@ -1,6 +1,6 @@
 import { makeStyles, SxProps } from "@mui/material";
 import { FC } from "react";
-import Key from "./Key/index";
+import Key from "../Key/index";
 import { useAppSelector } from "../../../../hooks/redux";
 import { Box } from "@mui/material";
 
