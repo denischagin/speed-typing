@@ -53,12 +53,3 @@ const Word: FC<WordProps> = ({
 };
 
 export default Word
-
-// export default memo(Word, (prevProps, nextProps) => {
-//   return (
-//     (prevProps.isError === nextProps.isError &&
-//       prevProps.currentWordIndex === nextProps.currentWordIndex) ||
-//     (nextProps.currentWordIndex !== prevProps.index &&
-//       nextProps.currentWordIndex - 1 !== prevProps.index)
-//   );
-// });

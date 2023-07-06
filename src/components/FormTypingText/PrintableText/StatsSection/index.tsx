@@ -1,4 +1,10 @@
-import React, { FC, ChangeEvent, MouseEventHandler, ReactNode } from "react";
+import React, {
+  FC,
+  ChangeEvent,
+  MouseEventHandler,
+  ReactNode,
+  memo,
+} from "react";
 import {
   Box,
   Typography,
@@ -90,4 +96,10 @@ const StatsSection: FC<StatsSectionProps> = ({
   );
 };
 
-export default StatsSection;
+export default memo(
+  StatsSection,
+  (prevProps, nextProps) =>
+    prevProps.mistakesCount === nextProps.mistakesCount &&
+    prevProps.textNumber === nextProps.textNumber &&
+    prevProps.textType === nextProps.textType
+);

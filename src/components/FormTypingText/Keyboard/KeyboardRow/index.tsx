@@ -54,7 +54,7 @@ const KeyboardRow: FC<IKeyboardRowProps> = ({ lettersRow }) => {
         <Key
           active={symbolAndCtrl(state.currentSymbol).includes(letter)}
           content={letter}
-          key={index + Date.now()}
+          key={letter}
           flexGrow={letter === "Space" ? 50 : 0}
         />
       ))}
