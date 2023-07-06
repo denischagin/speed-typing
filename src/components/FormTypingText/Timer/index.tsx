@@ -16,9 +16,14 @@ const Timer = () => {
   useEffect(() => {
     if (timerIsStarted) startTimer();
     else stopTimer();
+
+    return () => {
+      stopTimer();
+    };
   }, [timerIsStarted]);
 
   const startTimer = () => {
+    console.log("start timer");
     clearInterval(timerRef.current);
 
     timerRef.current = setInterval(() => {
@@ -27,7 +32,9 @@ const Timer = () => {
   };
 
   const stopTimer = () => {
-    clearInterval(timerRef.current)
+    console.log("stop timer");
+    clearInterval(timerRef.current);
+    console.log(timerRef.current);
   };
 
   return (

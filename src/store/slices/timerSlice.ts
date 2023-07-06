@@ -24,6 +24,7 @@ const timerSlice = createSlice({
 
     stopTimer(state) {
       state.timerIsStarted = false;
+      console.log('dispatch stop')
     },
 
     tick(state) {

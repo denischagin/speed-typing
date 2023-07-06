@@ -61,19 +61,18 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   const { mistakesCount } = useAppSelector((state) => state.mistakes);
 
   useEffect(() => {
-    if (timerIsStarted) {
-      textFieldInputRef.current?.focus();
-    }
-  }, [timerIsStarted]);
-
-  useEffect(() => {
     if (printingText == "") return;
     startNewText();
+
+    console.log("on printing text")
+
   }, [printingText]);
 
   useEffect(() => {
     if (words.length === 0) return;
     if (words.length === currentWordIndex) return stopTimerAndShowStats();
+
+    console.log("on current word index")
 
     dispatch(setCurrentSymbol(words[currentWordIndex][0]));
   }, [currentWordIndex]);
@@ -84,8 +83,8 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
     setValue("");
     setIsErrorInput(false);
     setCurrentWordIndex(0);
-    dispatch(setTimer(0));
     dispatch(stopTimer());
+    dispatch(setTimer(0))
     dispatch(setCurrentSymbol(newWords[0][0]));
     dispatch(setMistakes(0));
   };
@@ -131,25 +130,18 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
     }
   };
 
-  const stopTimerAndResetMistakes = () => {
-    dispatch(stopTimer());
-    dispatch(setTimer(0));
-    dispatch(setMistakes(0));
-  };
 
   const handleTypeTextChange = (e: SelectChangeEvent<TextTypeEnum>) => {
     const type = e.target.value;
     if (type === TextTypeEnum.PARAGRAPH || type === TextTypeEnum.SENTENCE)
       dispatch(setTypeAndNumberText({ textNumber, textType: type }));
 
-    timerIsStarted && stopTimerAndResetMistakes();
   };
 
   const handleTextNumberChange = (e: SelectChangeEvent<number>) => {
     if (typeof e.target.value === "number")
       dispatch(setTypeAndNumberText({ textNumber: e.target.value, textType }));
 
-    timerIsStarted && stopTimerAndResetMistakes();
   };
 
   const handleButtonNewText: MouseEventHandler<HTMLButtonElement> = (e) => {
