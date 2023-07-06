@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import { useRef, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useAppSelector } from "../../../hooks/redux";
-import { useAppDispatch } from "./../../../hooks/redux";
+import { useAppDispatch } from "../../../hooks/redux";
 import { convertMillisecondsToTime } from "../../../helpers/convertMillisecondsToTime";
 import { tick } from "../../../store/slices/timerSlice";
 

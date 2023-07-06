@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, FC } from "react";
+import { useState, useRef, useEffect, FC, MouseEventHandler } from "react";
 import PrintableText from "./PrintableText/index";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { setTimer, startTimer, stopTimer } from "../../store/slices/timerSlice";
@@ -8,10 +8,22 @@ import {
   incrementMistakes,
   setMistakes,
 } from "../../store/slices/mistakesSlice";
-import { Box, SxProps, TextField, Button } from "@mui/material";
+import {
+  Box,
+  SxProps,
+  TextField,
+  Button,
+  Typography,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+} from "@mui/material";
 import Keyboard from "./Keyboard";
 import { fetchText } from "../../store/asyncActions/fetchText";
 import LoadText from "./LoadText/LoadText";
+import { TextTypeEnum } from "../../types/TextTypeEnum";
+import { setTypeAndNumberText } from "../../store/slices/statisticsSlice";
+import Timer from './Timer/index';
 
 interface IFormTypingTextProps {
   printingText: string;
@@ -46,7 +58,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   const { textNumber, textType } = useAppSelector(
     (state) => state.statatistics
   );
-
+  const { mistakesCount } = useAppSelector((state) => state.mistakes);
 
   useEffect(() => {
     if (timerIsStarted) {
@@ -72,7 +84,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
     setValue("");
     setIsErrorInput(false);
     setCurrentWordIndex(0);
-    dispatch(setTimer(0))
+    dispatch(setTimer(0));
     dispatch(stopTimer());
     dispatch(setCurrentSymbol(newWords[0][0]));
     dispatch(setMistakes(0));
@@ -119,11 +131,91 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
     }
   };
 
+  const stopTimerAndResetMistakes = () => {
+    dispatch(stopTimer());
+    dispatch(setTimer(0));
+    dispatch(setMistakes(0));
+  };
+
+  const handleTypeTextChange = (e: SelectChangeEvent<TextTypeEnum>) => {
+    const type = e.target.value;
+    if (type === TextTypeEnum.PARAGRAPH || type === TextTypeEnum.SENTENCE)
+      dispatch(setTypeAndNumberText({ textNumber, textType: type }));
+
+    timerIsStarted && stopTimerAndResetMistakes();
+  };
+
+  const handleTextNumberChange = (e: SelectChangeEvent<number>) => {
+    if (typeof e.target.value === "number")
+      dispatch(setTypeAndNumberText({ textNumber: e.target.value, textType }));
+
+    timerIsStarted && stopTimerAndResetMistakes();
+  };
+
+  const handleButtonNewText: MouseEventHandler<HTMLButtonElement> = (e) => {
+    dispatch(fetchText({ textNumber, textType }));
+  };
+
   return (
     <Box sx={formTypingTextWrapper}>
       {!showStats ? (
         <>
-          <LoadText />
+          <Box display="flex" justifyContent="space-between" width="100%">
+            <Typography variant="body1">
+              Количество ошибок:{" "}
+              <Typography component="span" variant="h6">
+                {mistakesCount}
+              </Typography>
+            </Typography>
+
+            <Box
+              sx={{
+                display: "flex",
+                gap: "10px",
+              }}
+            >
+              <Select
+                labelId="text-type-select"
+                onChange={handleTypeTextChange}
+                label="Тип:"
+                value={textType}
+                autoWidth
+                variant="standard"
+              >
+                {Object.values(TextTypeEnum).map((type) => {
+                  let name =
+                    type === TextTypeEnum.SENTENCE
+                      ? "предложений"
+                      : "параграфов";
+                  return (
+                    <MenuItem key={type} value={type}>
+                      {name}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+
+              <Select
+                labelId="text-number-select"
+                onChange={handleTextNumberChange}
+                label="Количество:"
+                value={textNumber}
+                autoWidth
+                variant="standard"
+              >
+                {[1, 2, 3, 4, 5].map((number) => (
+                  <MenuItem key={number} value={number}>
+                    {number}
+                  </MenuItem>
+                ))}
+              </Select>
+              <Button variant="contained" onClick={handleButtonNewText}>
+                Другой текст
+              </Button>
+            </Box>
+            <LoadText />
+            <Timer />
+          </Box>
           <PrintableText
             currentWordIndex={currentWordIndex}
             words={words}
