@@ -1,4 +1,12 @@
-import { useState, useRef, useEffect, FC, MouseEventHandler } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  FC,
+  MouseEventHandler,
+  memo,
+  useMemo,
+} from "react";
 import PrintableText from "./PrintableText/index";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { setTimer, startTimer, stopTimer } from "../../store/slices/timerSlice";
@@ -17,6 +25,7 @@ import {
   Select,
   MenuItem,
   SelectChangeEvent,
+  LinearProgress,
 } from "@mui/material";
 import Keyboard from "./Keyboard";
 import { fetchText } from "../../store/asyncActions/fetchText";
@@ -54,8 +63,17 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   const [words, setWords] = useState<string[]>([]);
   const [keyboardActive, setKeyboardActive] = useState(false);
 
-  const { timerIsStarted } = useAppSelector((state) => state.timer);
-  const { textNumber, textType } = useAppSelector(
+  const customEqual = (oldValue: any, newValue: any) =>
+    oldValue.timerIsStarted === newValue.timerIsStarted;
+
+  const { timerIsStarted } = useAppSelector(
+    (state) => state.timer,
+    customEqual
+  );
+
+  const timerIsStartedMemo = useMemo(() => timerIsStarted, [timerIsStarted]);
+
+  const { isLoading, textNumber, textType } = useAppSelector(
     (state) => state.statatistics
   );
   const { mistakesCount } = useAppSelector((state) => state.mistakes);
@@ -90,7 +108,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   };
 
   const onInputStart = (value: string) => {
-    if (!timerIsStarted && value.length >= 1) dispatch(startTimer());
+    if (!timerIsStartedMemo && value.length >= 1) dispatch(startTimer());
   };
 
   const handlerInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -200,11 +218,16 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
             <LoadText />
             <Timer />
           </Box>
-          <PrintableText
-            currentWordIndex={currentWordIndex}
-            words={words}
-            isError={isErrorInput}
-          />
+
+          {!isLoading ? (
+            <PrintableText
+              currentWordIndex={currentWordIndex}
+              words={words}
+              isError={isErrorInput}
+            />
+          ) : (
+            <LinearProgress sx={{ width: "100%", m: "40px" }} />
+          )}
 
           <TextField
             inputRef={textFieldInputRef}
