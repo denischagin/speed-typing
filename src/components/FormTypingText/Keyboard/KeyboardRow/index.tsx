@@ -52,7 +52,7 @@ const KeyboardRow: FC<IKeyboardRowProps> = ({ lettersRow }) => {
     <Box sx={row}>
       {lettersRow.map((letter, index) => (
         <Key
-          active={symbolAndCtrl(state.currentSymbol).indexOf(letter) != -1}
+          active={symbolAndCtrl(state.currentSymbol).includes(letter)}
           content={letter}
           key={index + Date.now()}
           flexGrow={letter === "Space" ? 50 : 0}
