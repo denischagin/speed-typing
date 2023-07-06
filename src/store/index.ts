@@ -9,7 +9,7 @@ const rootReducer = combineReducers({
     keyboard: keyboardSlice,
     // text: textSlice,
     timer: timerSlice,
-    statatistics: statatisticsSlice,
+    statistics: statatisticsSlice,
 })
 
 

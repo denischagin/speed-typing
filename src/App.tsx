@@ -14,7 +14,7 @@ import { routesEnum } from "./types/routesEnum";
 
 const App = () => {
   const { textType, textNumber } = useAppSelector(
-    (state) => state.statatistics
+    (state) => state.statistics
   );
   const dispatch = useAppDispatch();
 

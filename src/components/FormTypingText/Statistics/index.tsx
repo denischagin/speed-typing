@@ -13,16 +13,16 @@ interface StatisticsProps {
 
 const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
   const theme = useTheme();
-
   const dispatch = useAppDispatch();
 
   const { mistakesCount } = useAppSelector((state) => state.mistakes);
   const { timer } = useAppSelector((state) => state.timer);
+  const { text } = useAppSelector((state) => state.statistics);
 
-  const { text } = useAppSelector((state) => state.statatistics);
-
-  const { printSpeedLetterPerMinute, printSpeedWordsPerMinute } =
-    useTypingSpeed(timer, text);
+  const { printSpeedLetterPerMinute, printSpeedWordsPerMinute } = useTypingSpeed(
+    timer,
+    text
+  );
 
   useEffect(() => {
     dispatch(
@@ -36,28 +36,29 @@ const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
   }, []);
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-      }}
-    >
-      <Typography variant="h2">Статистика</Typography>
-
-      <Button onClick={closeStatistic}>
-        Начать печатать новый рандомный текст
-      </Button>
+    <Box sx={{ width: "100%" }}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+      >
+        <Typography variant="h2">Статистика</Typography>
+        <Button onClick={closeStatistic} variant="outlined">
+          Новый текст
+        </Button>
+      </Box>
 
       <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          flexWrap: "wrap",
-          justifyContent: "space-evenly",
-          height: "300px",
-          marginTop: "10px",
-          borderRadius: "10px",
-          backgroundColor: theme.palette.primary.light,
-        }}
+        display="flex"
+        alignItems="center"
+        flexWrap="wrap"
+        justifyContent="space-evenly"
+        height={300}
+        marginTop={2}
+        borderRadius={10}
+        bgcolor={theme.palette.primary.light}
+        p={2}
       >
         <Box
           component="img"
@@ -67,80 +68,51 @@ const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
           }}
         />
 
-        <Typography
-          variant="h4"
-          component="p"
-          color={theme.palette.text.primary}
-        >
+        <Typography variant="h4" component="p" color="text.primary">
           {printSpeedLetterPerMinute} зн./мин.
         </Typography>
 
-        <Typography
-          variant="h4"
-          component="p"
-          color={theme.palette.text.primary}
-        >
+        <Typography variant="h4" component="p" color="text.primary">
           {printSpeedWordsPerMinute} слов/мин.
         </Typography>
 
         <Box
           component="img"
           src={keyboardIcon}
-          color="red"
           sx={{
             width: "150px",
           }}
         />
       </Box>
 
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          height: "300px",
-          gap: "10px",
-          marginTop: "10px",
-          borderRadius: "10px",
-        }}
-      >
+      <Box display="flex" mt={2}>
         <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "300px",
-            marginTop: "10px",
-            width: "50%",
-            borderRadius: "10px",
-            backgroundColor: theme.palette.error.light,
-          }}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          flexGrow={1}
+          height={300}
+          mr={1}
+          borderRadius={10}
+          bgcolor={theme.palette.error.light}
+          p={2}
         >
-          <Typography
-            variant="h4"
-            component="p"
-            color={theme.palette.text.primary}
-          >
+          <Typography variant="h4" component="p" color="text.primary">
             Ошибки: {mistakesCount}
           </Typography>
         </Box>
         <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexGrow: 1,
-            height: "300px",
-            width: "50%",
-            marginTop: "10px",
-            borderRadius: "10px",
-            backgroundColor: theme.palette.success.light,
-          }}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          flexGrow={1}
+          height={300}
+          ml={1}
+          borderRadius={10}
+          bgcolor={theme.palette.success.light}
+          p={2}
         >
-          <Typography
-            variant="h4"
-            component="p"
-            color={theme.palette.text.primary}
-          >
+          <Typography variant="h4" component="p" color="text.primary">
             Время: {convertMillisecondsToTime(timer)}
           </Typography>
         </Box>

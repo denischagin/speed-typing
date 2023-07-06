@@ -79,7 +79,7 @@ const Header: FC<HeaderProps> = ({}) => {
   };
 
   const { textNumber, textType } = useAppSelector(
-    (state) => state.statatistics
+    (state) => state.statistics
   );
 
 

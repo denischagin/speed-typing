@@ -3,15 +3,13 @@ import { useAppSelector } from "../hooks/redux";
 import FormTypingText from "../components/FormTypingText";
 
 const TypingPage = () => {
-  const { text } = useAppSelector(
-    (state) => state.statatistics
-  );
+  const { text } = useAppSelector((state) => state.statistics);
 
   return (
     <Container>
       <FormTypingText printingText={text} />
-  </Container>
-  )
-}
+    </Container>
+  );
+};
 
-export default TypingPage
+export default TypingPage;

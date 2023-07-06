@@ -13,7 +13,7 @@ import {
 import HistoryItem from "../components/history/HistoryItem";
 
 const HistoryPage = () => {
-  const { history } = useAppSelector((state) => state.statatistics);
+  const { history } = useAppSelector((state) => state.statistics);
   const [pageNumber, setPageNumber] = useState(0);
 
   const historyReverse = [...history].reverse();

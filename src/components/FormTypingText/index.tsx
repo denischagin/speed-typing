@@ -33,6 +33,7 @@ import LoadText from "./LoadText/LoadText";
 import { TextTypeEnum } from "../../types/TextTypeEnum";
 import { setTypeAndNumberText } from "../../store/slices/statisticsSlice";
 import Timer from "./Timer/index";
+import StatsSection from "./PrintableText/StatsSection/StatsSection";
 
 interface IFormTypingTextProps {
   printingText: string;
@@ -74,7 +75,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   const timerIsStartedMemo = useMemo(() => timerIsStarted, [timerIsStarted]);
 
   const { isLoading, textNumber, textType } = useAppSelector(
-    (state) => state.statatistics
+    (state) => state.statistics
   );
   const { mistakesCount } = useAppSelector((state) => state.mistakes);
 
@@ -163,58 +164,15 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
       {!showStats ? (
         <>
           <Box display="flex" justifyContent="space-between" width="100%">
-            <Typography variant="body1">
-              Количество ошибок:{" "}
-              <Typography component="span" variant="h6">
-                {mistakesCount}
-              </Typography>
-            </Typography>
+            <StatsSection
+              mistakesCount={mistakesCount}
+              textType={textType}
+              textNumber={textNumber}
+              handleTypeTextChange={handleTypeTextChange}
+              handleTextNumberChange={handleTextNumberChange}
+              handleButtonNewText={handleButtonNewText}
+            />
 
-            <Box
-              sx={{
-                display: "flex",
-                gap: "10px",
-              }}
-            >
-              <Select
-                labelId="text-type-select"
-                onChange={handleTypeTextChange}
-                label="Тип:"
-                value={textType}
-                autoWidth
-                variant="standard"
-              >
-                {Object.values(TextTypeEnum).map((type) => {
-                  let name =
-                    type === TextTypeEnum.SENTENCE
-                      ? "предложений"
-                      : "параграфов";
-                  return (
-                    <MenuItem key={type} value={type}>
-                      {name}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-
-              <Select
-                labelId="text-number-select"
-                onChange={handleTextNumberChange}
-                label="Количество:"
-                value={textNumber}
-                autoWidth
-                variant="standard"
-              >
-                {[1, 2, 3, 4, 5].map((number) => (
-                  <MenuItem key={number} value={number}>
-                    {number}
-                  </MenuItem>
-                ))}
-              </Select>
-              <Button variant="contained" onClick={handleButtonNewText}>
-                Другой текст
-              </Button>
-            </Box>
             <LoadText />
             <Timer />
           </Box>
