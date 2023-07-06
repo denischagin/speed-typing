@@ -28,8 +28,6 @@ const HistoryPage = () => {
     pagesVisited + countItemsOnPage
   );
 
-  console.log(historyByPagination);
-
   const handlePaginationChange = (
     event: React.ChangeEvent<unknown>,
     page: number
@@ -50,7 +48,7 @@ const HistoryPage = () => {
           count={countPages}
           onChange={handlePaginationChange}
           variant="outlined"
-          shape="rounded" 
+          shape="rounded"
         />
       )}
       <Box>

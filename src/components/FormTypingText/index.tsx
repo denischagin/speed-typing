@@ -23,7 +23,7 @@ import { fetchText } from "../../store/asyncActions/fetchText";
 import LoadText from "./LoadText/LoadText";
 import { TextTypeEnum } from "../../types/TextTypeEnum";
 import { setTypeAndNumberText } from "../../store/slices/statisticsSlice";
-import Timer from './Timer/index';
+import Timer from "./Timer/index";
 
 interface IFormTypingTextProps {
   printingText: string;
@@ -63,16 +63,11 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   useEffect(() => {
     if (printingText == "") return;
     startNewText();
-
-    console.log("on printing text")
-
   }, [printingText]);
 
   useEffect(() => {
     if (words.length === 0) return;
     if (words.length === currentWordIndex) return stopTimerAndShowStats();
-
-    console.log("on current word index")
 
     dispatch(setCurrentSymbol(words[currentWordIndex][0]));
   }, [currentWordIndex]);
@@ -84,7 +79,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
     setIsErrorInput(false);
     setCurrentWordIndex(0);
     dispatch(stopTimer());
-    dispatch(setTimer(0))
+    dispatch(setTimer(0));
     dispatch(setCurrentSymbol(newWords[0][0]));
     dispatch(setMistakes(0));
   };
@@ -130,18 +125,15 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
     }
   };
 
-
   const handleTypeTextChange = (e: SelectChangeEvent<TextTypeEnum>) => {
     const type = e.target.value;
     if (type === TextTypeEnum.PARAGRAPH || type === TextTypeEnum.SENTENCE)
       dispatch(setTypeAndNumberText({ textNumber, textType: type }));
-
   };
 
   const handleTextNumberChange = (e: SelectChangeEvent<number>) => {
     if (typeof e.target.value === "number")
       dispatch(setTypeAndNumberText({ textNumber: e.target.value, textType }));
-
   };
 
   const handleButtonNewText: MouseEventHandler<HTMLButtonElement> = (e) => {

@@ -23,7 +23,6 @@ const Timer = () => {
   }, [timerIsStarted]);
 
   const startTimer = () => {
-    console.log("start timer");
     clearInterval(timerRef.current);
 
     timerRef.current = setInterval(() => {
@@ -32,9 +31,7 @@ const Timer = () => {
   };
 
   const stopTimer = () => {
-    console.log("stop timer");
     clearInterval(timerRef.current);
-    console.log(timerRef.current);
   };
 
   return (

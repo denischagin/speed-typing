@@ -24,19 +24,17 @@ const timerSlice = createSlice({
 
     stopTimer(state) {
       state.timerIsStarted = false;
-      console.log('dispatch stop')
     },
 
     tick(state) {
-      state.timer = (Date.now() - state.dateStart)/10
+      state.timer = (Date.now() - state.dateStart) / 10;
     },
 
     setTimer(state, action: PayloadAction<number>) {
-      state.timer = action.payload
-    }
+      state.timer = action.payload;
+    },
   },
 });
 
 export default timerSlice.reducer;
-export const { startTimer, stopTimer, setTimer, tick } =
-  timerSlice.actions;
+export const { startTimer, stopTimer, setTimer, tick } = timerSlice.actions;
