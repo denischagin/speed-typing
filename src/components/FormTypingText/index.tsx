@@ -54,8 +54,6 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
     width: "100%",
   };
 
-
-  console.log('render form typing text')
   const dispatch = useAppDispatch();
   const textFieldInputRef = useRef<HTMLInputElement>(null);
 
@@ -67,7 +65,6 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
 
   const words = printingText.split(" ");
 
-
   const customEqual = (oldValue: any, newValue: any) =>
     oldValue.timerIsStarted === newValue.timerIsStarted;
 
@@ -77,7 +74,12 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
     customEqual
   );
 
-  const timerIsStartedMemo = useMemo(() => timerIsStarted, [timerIsStarted]);
+  const timerIsStartedMemo = useMemo(() => {
+    !timerIsStarted
+      ? (document.title = "SpeedScript")
+      : (document.title = "Идет время...");
+    return timerIsStarted;
+  }, [timerIsStarted]);
 
   const { isLoading, textNumber, textType } = useAppSelector(
     (state) => state.statistics
@@ -142,7 +144,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
 
       dispatch(setCurrentSymbol(currentSymbol));
     } else {
-      dispatch(setCurrentSymbol("Backspace"))
+      dispatch(setCurrentSymbol("Backspace"));
       !isErrorInput && dispatch(incrementMistakes());
       setIsErrorInput(true);
     }
