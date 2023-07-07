@@ -10,23 +10,25 @@ interface IKeyProps {
   content: string;
   flexGrow: number;
   active: boolean;
+  color: string
 }
 
-const Key: FC<IKeyProps> = ({ content, flexGrow, active }) => {
+const Key: FC<IKeyProps> = ({ content, flexGrow, active ,color }) => {
   const theme = useTheme()
   const key: SxProps = {
     textAlign: "center",
     padding: "3px",
     margin: "3px",
     borderRadius: "5px",
-    border: "1px solid black",
+    border: "1px solid rgba(0, 0, 0, 0.3)",
     width: "100%",
     flexBasis: "100px",
-    flexGrow: flexGrow,
+    flexGrow,
+    backgroundColor: color
   };
 
   const keyActive: SxProps = {
-    background: theme.palette.primary.light
+    boxShadow: "inset 0 0 0 100px rgba(0, 0, 0, 0.2)"
   };
 
   const keyStyles: SxProps = active ? { ...key, ...keyActive } : key;

@@ -1,5 +1,5 @@
 import { PaletteColorOptions, createTheme } from "@mui/material";
-import { green } from "@mui/material/colors";
+import { blue, green, grey, purple, red, yellow } from "@mui/material/colors";
 
 const RED = {
   "50": "#f8e6e5",
@@ -37,8 +37,44 @@ const BLUE = {
   contrastText: "white"
 };
 
+declare module '@mui/material/styles' {
+  interface Theme {
+    fingers: {
+      thumb: string;
+      leftIndex: string;
+      rightIndex: string;
+      ring: string;
+      middle: string;
+      pinky: string;
+      default: string
+    };
+  }
+  // allow configuration using `createTheme`
+  interface ThemeOptions {
+    fingers?: {
+      thumb?: string;
+      leftIndex?: string;
+      rightIndex?: string;
+      ring?: string;
+      middle?: string;
+      pinky?: string;
+      default: string
+    };
+  }
+}
+
+
 export const createCustomTheme = () => {
   return createTheme({
+    fingers: {
+      leftIndex: blue[100],
+      rightIndex: blue[300],
+      thumb: red[100],
+      middle: green[100],
+      ring: yellow[100],
+      pinky: purple[100],
+      default: grey[100]
+    },
     palette: {
       primary: {
         main: BLUE[500],

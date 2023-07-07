@@ -54,6 +54,8 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
     width: "100%",
   };
 
+
+  console.log('render form typing text')
   const dispatch = useAppDispatch();
   const textFieldInputRef = useRef<HTMLInputElement>(null);
 
@@ -69,6 +71,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   const customEqual = (oldValue: any, newValue: any) =>
     oldValue.timerIsStarted === newValue.timerIsStarted;
 
+  const { currentSymbol } = useAppSelector((state) => state.keyboard);
   const { timerIsStarted } = useAppSelector(
     (state) => state.timer,
     customEqual
@@ -139,6 +142,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
 
       dispatch(setCurrentSymbol(currentSymbol));
     } else {
+      dispatch(setCurrentSymbol("Backspace"))
       !isErrorInput && dispatch(incrementMistakes());
       setIsErrorInput(true);
     }
@@ -207,7 +211,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
             {keyboardActive ? "Закрыть" : "Открыть клавиатуру"}
           </Button>
 
-          {keyboardActive && <Keyboard />}
+          {keyboardActive && <Keyboard currentSymbol={currentSymbol} />}
         </>
       ) : (
         <Statistics
