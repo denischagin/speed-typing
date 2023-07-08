@@ -34,10 +34,18 @@ const PrintableText: FC<IPrintableTextProps> = ({
   };
 
   const activeWordRef = useRef<HTMLParagraphElement>(null);
+  const containerRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
-    activeWordRef.current?.scrollIntoView({
-      inline: "start"
+    if (!containerRef.current || !activeWordRef.current) return;
+    const scrollOffset = 6;
+
+    containerRef.current.scrollTo({
+      top:
+        activeWordRef.current.offsetTop -
+        containerRef.current.offsetTop -
+        scrollOffset,
+      behavior: "smooth"
     });
   }, [currentWordIndex]);
 
@@ -54,7 +62,7 @@ const PrintableText: FC<IPrintableTextProps> = ({
   };
 
   return (
-    <Typography variant="body1" sx={commonText}>
+    <Typography variant="body1" sx={commonText} ref={containerRef}>
       {words.map((word, wordIndex) => (
         <Word
           ref={wordIndex === currentWordIndex ? activeWordRef : undefined}
