@@ -9,7 +9,6 @@ interface WordProps {
 }
 
 const Word: FC<WordProps> = ({ children, index, type = "default" }) => {
-  console.log("render word");
   const theme = useTheme();
 
   const spanText: SxProps = {

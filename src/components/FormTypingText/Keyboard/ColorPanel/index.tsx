@@ -1,5 +1,5 @@
 import { Box, SxProps, Typography, useTheme } from "@mui/material";
-import React from "react";
+import React, { memo } from "react";
 
 const ColorPanel = () => {
   const commonColorStyle: SxProps = {
@@ -86,4 +86,4 @@ const ColorPanel = () => {
   );
 };
 
-export default ColorPanel;
+export default memo(ColorPanel);

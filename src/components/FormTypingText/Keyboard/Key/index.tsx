@@ -1,20 +1,15 @@
-import {
-  Typography,
-  SxProps,
-  Box,
-  useTheme,
-} from "@mui/material";
-import { FC } from "react";
+import { Typography, SxProps, Box, useTheme } from "@mui/material";
+import { FC, memo } from "react";
 
 interface IKeyProps {
   content: string;
   flexGrow: number;
   active: boolean;
-  color: string
+  color: string;
 }
 
-const Key: FC<IKeyProps> = ({ content, flexGrow, active ,color }) => {
-  const theme = useTheme()
+const Key: FC<IKeyProps> = ({ content, flexGrow, active, color }) => {
+  const theme = useTheme();
   const key: SxProps = {
     textAlign: "center",
     padding: "3px",
@@ -24,11 +19,11 @@ const Key: FC<IKeyProps> = ({ content, flexGrow, active ,color }) => {
     width: "100%",
     flexBasis: "100px",
     flexGrow,
-    backgroundColor: color
+    backgroundColor: color,
   };
 
   const keyActive: SxProps = {
-    boxShadow: "inset 0 0 0 100px rgba(0, 0, 0, 0.2)"
+    boxShadow: "inset 0 0 0 100px rgba(0, 0, 0, 0.2)",
   };
 
   const keyStyles: SxProps = active ? { ...key, ...keyActive } : key;
@@ -40,4 +35,7 @@ const Key: FC<IKeyProps> = ({ content, flexGrow, active ,color }) => {
   );
 };
 
-export default Key;
+export default memo(
+  Key,
+  (prevProps, nextProps) => prevProps.active === nextProps.active
+);
