@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useRef } from "react";
 import { SxProps, Typography, useTheme } from "@mui/material";
 import Word from "./Word";
 import { WordType } from "../../../types/WordTypeEnum";
@@ -18,7 +18,15 @@ const PrintableText: FC<IPrintableTextProps> = ({
   // styles
   const commonText: SxProps = {
     fontSize: "20px",
+    height: "400px",
+    overflowY: "scroll"
   };
+
+  const activeWordRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    activeWordRef.current?.scrollIntoView()
+  }, [currentWordIndex])
 
   const getWordType = (
     wordIndex: number,
@@ -36,12 +44,12 @@ const PrintableText: FC<IPrintableTextProps> = ({
     <Typography variant="body1" sx={commonText}>
       {words.map((word, wordIndex) => (
         <Word
+          ref={wordIndex === currentWordIndex ? activeWordRef : undefined}
           key={wordIndex}
           index={wordIndex}
           type={getWordType(wordIndex, currentWordIndex, isError)}
-        >
-          {word}
-        </Word>
+          text={word}
+        />
       ))}
     </Typography>
   );
