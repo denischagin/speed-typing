@@ -39,4 +39,5 @@ npm run dev
 
 
 Главный экран приложения:
-![image](https://github.com/denischagin/speed-typing/assets/98116130/d2677c4d-5930-41c4-a2ae-f9eaf78e02b4)
+![image](https://github.com/denischagin/speed-typing/assets/98116130/98cc6d4e-602f-44fd-b971-9d57e1612154)
+
