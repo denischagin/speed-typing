@@ -14,7 +14,7 @@ interface IStatsState {
   text: string;
   isLoading: boolean;
   error: string | unknown;
-  history: IHistoryStatistic[]
+  history: IHistoryStatistic[];
 }
 
 const initialState: IStatsState = {
@@ -25,7 +25,7 @@ const initialState: IStatsState = {
   text: "",
   isLoading: false,
   error: "",
-  history: []
+  history: [],
 };
 
 const statatisticsSlice = createSlice({
@@ -33,7 +33,7 @@ const statatisticsSlice = createSlice({
   name: "statistics",
   reducers: {
     setText(state, action: PayloadAction<string>) {
-      state.text = action.payload.replace(/\s+/g, " ");;
+      state.text = action.payload.replace(/\s+/g, " ");
     },
 
     setTypeAndNumberText(
@@ -43,13 +43,17 @@ const statatisticsSlice = createSlice({
         textNumber: number;
       }>
     ) {
-      state.textType = action.payload.textType,
-      state.textNumber = action.payload.textNumber;
+      (state.textType = action.payload.textType),
+        (state.textNumber = action.payload.textNumber);
     },
 
     addTypingHistory(state, action: PayloadAction<IHistoryStatistic>) {
-      state.history.push(action.payload)
-    }
+      state.history.push(action.payload);
+    },
+
+    removeTypingHistory(state, action: PayloadAction<number>) {
+      state.history = state.history.filter((el) => el.id !== action.payload);
+    },
   },
 
   extraReducers: (builder) => {
@@ -62,7 +66,6 @@ const statatisticsSlice = createSlice({
         const text = validateText(action.payload.text);
 
         state.text = text;
-      
       })
       .addCase(fetchText.rejected, (state, action) => {
         state.isLoading = false;
@@ -72,4 +75,5 @@ const statatisticsSlice = createSlice({
 });
 
 export default statatisticsSlice.reducer;
-export const { setTypeAndNumberText, setText, addTypingHistory } = statatisticsSlice.actions;
+export const { setTypeAndNumberText, setText, addTypingHistory, removeTypingHistory } =
+  statatisticsSlice.actions;

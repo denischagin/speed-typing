@@ -13,6 +13,7 @@ import Keyboard from "./Keyboard";
 import { fetchText } from "../../store/asyncActions/fetchText";
 import StatsSection from "../StatsSection";
 import Timer from "./Timer";
+import { TitleEnum } from "../../types/TitleEnum";
 
 interface IFormTypingTextProps {
   printingText: string;
@@ -54,11 +55,17 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   );
 
   const timerIsStartedMemo = useMemo(() => {
-    !timerIsStarted
-      ? (document.title = "SpeedScript")
-      : (document.title = "Идет время...");
     return timerIsStarted;
   }, [timerIsStarted]);
+
+  useEffect(() => {
+    !timerIsStartedMemo
+      ? (document.title = TitleEnum.DEFAULT)
+      : (document.title = TitleEnum.TIME_GOES);
+    return () => {
+      document.title = TitleEnum.DEFAULT;
+    };
+  }, [timerIsStartedMemo]);
 
   const { isLoading, textNumber, textType } = useAppSelector(
     (state) => state.statistics

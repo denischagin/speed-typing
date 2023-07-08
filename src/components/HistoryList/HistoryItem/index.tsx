@@ -1,7 +1,16 @@
 import React, { useState } from "react";
-import { Box, Typography, IconButton, Modal, SxProps } from "@mui/material";
+import {
+  Box,
+  Typography,
+  IconButton,
+  Modal,
+  SxProps,
+  Button,
+} from "@mui/material";
 import textIcon from "../../../assets/text-icon.svg";
 import { IHistoryStatistic } from "../../../types/IHistoryStatistic";
+import { useAppDispatch } from "../../../hooks/redux";
+import { removeTypingHistory } from "../../../store/slices/statisticsSlice";
 
 const modalContent: SxProps = {
   display: "flex",
@@ -26,6 +35,8 @@ interface HistoryItemProps {
 
 const HistoryItem: React.FC<HistoryItemProps> = ({ attempt }) => {
   const [openModal, setOpenModal] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -53,6 +64,11 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ attempt }) => {
           width="30px"
         />
       </IconButton>
+
+      <Button onClick={() => dispatch(removeTypingHistory(attempt.id))}>
+        Удалить
+      </Button>
+
       <Modal
         open={openModal}
         onClose={handleCloseModal}
