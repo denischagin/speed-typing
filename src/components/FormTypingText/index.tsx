@@ -1,12 +1,4 @@
-import {
-  useState,
-  useRef,
-  useEffect,
-  FC,
-  MouseEventHandler,
-  memo,
-  useMemo,
-} from "react";
+import { useState, useRef, useEffect, FC, useMemo } from "react";
 import PrintableText from "./PrintableText/index";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { setTimer, startTimer, stopTimer } from "../../store/slices/timerSlice";
@@ -16,24 +8,11 @@ import {
   incrementMistakes,
   setMistakes,
 } from "../../store/slices/mistakesSlice";
-import {
-  Box,
-  SxProps,
-  TextField,
-  Button,
-  Typography,
-  Select,
-  MenuItem,
-  SelectChangeEvent,
-  LinearProgress,
-} from "@mui/material";
+import { Box, SxProps, TextField, Button, LinearProgress } from "@mui/material";
 import Keyboard from "./Keyboard";
 import { fetchText } from "../../store/asyncActions/fetchText";
-import LoadText from "./LoadText";
-import { TextTypeEnum } from "../../types/TextTypeEnum";
-import { setTypeAndNumberText } from "../../store/slices/statisticsSlice";
-import Timer from "./Timer/index";
-import StatsSection from "./PrintableText/StatsSection";
+import StatsSection from "../StatsSection";
+import Timer from "./Timer";
 
 interface IFormTypingTextProps {
   printingText: string;
@@ -84,7 +63,6 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   const { isLoading, textNumber, textType } = useAppSelector(
     (state) => state.statistics
   );
-  const { mistakesCount } = useAppSelector((state) => state.mistakes);
 
   useEffect(() => {
     if (printingText == "") return;
@@ -150,36 +128,12 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
     }
   };
 
-  const handleTypeTextChange = (e: SelectChangeEvent<TextTypeEnum>) => {
-    const type = e.target.value;
-    if (type === TextTypeEnum.PARAGRAPH || type === TextTypeEnum.SENTENCE)
-      dispatch(setTypeAndNumberText({ textNumber, textType: type }));
-  };
-
-  const handleTextNumberChange = (e: SelectChangeEvent<number>) => {
-    if (typeof e.target.value === "number")
-      dispatch(setTypeAndNumberText({ textNumber: e.target.value, textType }));
-  };
-
-  const handleButtonNewText: MouseEventHandler<HTMLButtonElement> = (e) => {
-    dispatch(fetchText({ textNumber, textType }));
-  };
-
   return (
     <Box sx={formTypingTextWrapper}>
       {!showStats ? (
         <>
           <Box display="flex" justifyContent="space-between" width="100%">
-            <StatsSection
-              mistakesCount={mistakesCount}
-              textType={textType}
-              textNumber={textNumber}
-              handleTypeTextChange={handleTypeTextChange}
-              handleTextNumberChange={handleTextNumberChange}
-              handleButtonNewText={handleButtonNewText}
-            />
-
-            <LoadText />
+            <StatsSection />
             <Timer />
           </Box>
 
@@ -201,9 +155,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
             type="text"
             error={isErrorInput}
             value={value}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              handlerInputChange(e);
-            }}
+            onChange={handlerInputChange}
           />
 
           <Button

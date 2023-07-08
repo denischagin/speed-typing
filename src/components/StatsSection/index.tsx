@@ -13,31 +13,38 @@ import {
   Button,
   SelectChangeEvent,
 } from "@mui/material";
-import { TextTypeEnum } from "../../../../types/TextTypeEnum";
+import { TextTypeEnum } from "../../types/TextTypeEnum";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { setTypeAndNumberText } from "../../store/slices/statisticsSlice";
+import { fetchText } from "../../store/asyncActions/fetchText";
+import Timer from "../FormTypingText/Timer";
+import LoadText from "../FormTypingText/LoadText";
 
-interface StatsSectionProps {
-  mistakesCount: number;
-  textType: TextTypeEnum;
-  textNumber: number;
-  handleTypeTextChange: (
-    event: SelectChangeEvent<TextTypeEnum>,
-    child: ReactNode
-  ) => void;
-  handleTextNumberChange: (
-    event: SelectChangeEvent<number>,
-    child: ReactNode
-  ) => void;
-  handleButtonNewText: MouseEventHandler<HTMLButtonElement>;
-}
+const StatsSection: FC = () => {
+  const dispatch = useAppDispatch();
 
-const StatsSection: FC<StatsSectionProps> = ({
-  mistakesCount,
-  textType,
-  textNumber,
-  handleTypeTextChange,
-  handleTextNumberChange,
-  handleButtonNewText,
-}) => {
+  const { textNumber, textType } = useAppSelector(
+    (state) => state.statistics,
+    (a, b) => a.textNumber === b.textNumber && a.textType === b.textType
+  );
+  const { mistakesCount } = useAppSelector((state) => state.mistakes);
+
+  const handleTypeTextChange = (e: SelectChangeEvent<TextTypeEnum>) => {
+    const type = e.target.value;
+
+    if (type === TextTypeEnum.PARAGRAPH || type === TextTypeEnum.SENTENCE)
+      dispatch(setTypeAndNumberText({ textNumber, textType: type }));
+  };
+
+  const handleTextNumberChange = (e: SelectChangeEvent<number>) => {
+    if (typeof e.target.value === "number")
+      dispatch(setTypeAndNumberText({ textNumber: e.target.value, textType }));
+  };
+
+  const handleButtonNewText: MouseEventHandler<HTMLButtonElement> = (e) => {
+    dispatch(fetchText({ textNumber, textType }));
+  };
+
   return (
     <>
       <Typography variant="body1">
@@ -92,14 +99,10 @@ const StatsSection: FC<StatsSectionProps> = ({
           Другой текст
         </Button>
       </Box>
+
+      <LoadText />
     </>
   );
 };
 
-export default memo(
-  StatsSection,
-  (prevProps, nextProps) =>
-    prevProps.mistakesCount === nextProps.mistakesCount &&
-    prevProps.textNumber === nextProps.textNumber &&
-    prevProps.textType === nextProps.textType
-);
+export default memo(StatsSection);

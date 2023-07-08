@@ -68,7 +68,7 @@ export const createCustomTheme = () => {
   return createTheme({
     fingers: {
       leftIndex: blue[100],
-      rightIndex: blue[300],
+      rightIndex: blue[200],
       thumb: red[100],
       middle: green[100],
       ring: yellow[100],
