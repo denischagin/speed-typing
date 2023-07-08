@@ -144,7 +144,9 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
               isError={isErrorInput}
             />
           ) : (
-            <LinearProgress sx={{ width: "100%", m: "40px" }} />
+            <Box height="400px" width="100%">
+              <LinearProgress variant="indeterminate" sx={{ width: "100%" }} />
+            </Box>
           )}
 
           <TextField

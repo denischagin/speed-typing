@@ -1,18 +1,23 @@
 import React, { useState } from "react";
 import { Box, Typography, IconButton, Modal, SxProps } from "@mui/material";
-import textIcon from "../../assets/text-icon.svg";
-import { IHistoryStatistic } from "../../types/IHistoryStatistic";
+import textIcon from "../../../assets/text-icon.svg";
+import { IHistoryStatistic } from "../../../types/IHistoryStatistic";
 
 const modalContent: SxProps = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
   position: "absolute" as "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  maxWidth: "1000px",
+  width: "100%",
   bgcolor: "background.paper",
   boxShadow: 24,
   borderRadius: 2,
   p: 4,
+  wordBreak: "break-all",
 };
 
 interface HistoryItemProps {
@@ -55,7 +60,7 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ attempt }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={modalContent}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography id="modal-modal-title" variant="h4" component="h2">
             Текст:
           </Typography>
           <Box id="modal-modal-description" sx={{ mt: 2 }}>

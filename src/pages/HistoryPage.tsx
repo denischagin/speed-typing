@@ -10,7 +10,8 @@ import {
   Modal,
   SxProps,
 } from "@mui/material";
-import HistoryItem from "../components/HistoryItem";
+import HistoryItem from "../components/HistoryList/HistoryItem";
+import HistoryList from "../components/HistoryList";
 
 const HistoryPage = () => {
   const { history } = useAppSelector((state) => state.statistics);
@@ -51,17 +52,12 @@ const HistoryPage = () => {
           shape="rounded"
         />
       )}
-      <Box>
-        {historyReverse.length === 0 ? (
-          <MenuItem>
-            <Typography variant="h5">История попыток пустая</Typography>
-          </MenuItem>
-        ) : (
-          historyByPagination.map((attemp) => (
-            <HistoryItem attempt={attemp} key={attemp.id} />
-          ))
-        )}
-      </Box>
+
+      <HistoryList 
+        historyList={history}
+        historyPagination={historyByPagination}
+      />
+    
     </Container>
   );
 };

@@ -9,7 +9,7 @@ import React, {
   ForwardRefRenderFunction,
 } from "react";
 import { Typography, SxProps, useTheme } from "@mui/material";
-import { WordType } from "../../../../types/WordTypeEnum";
+import { WordType } from "../../../../types/WordType";
 
 interface WordProps {
   text: string;

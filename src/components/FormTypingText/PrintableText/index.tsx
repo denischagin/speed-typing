@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef } from "react";
 import { SxProps, Typography, useTheme } from "@mui/material";
 import Word from "./Word";
-import { WordType } from "../../../types/WordTypeEnum";
+import { WordType } from "../../../types/WordType";
 
 interface IPrintableTextProps {
   words: string[];
@@ -19,14 +19,27 @@ const PrintableText: FC<IPrintableTextProps> = ({
   const commonText: SxProps = {
     fontSize: "20px",
     height: "400px",
-    overflowY: "scroll"
+    width: "100%",
+    p: "0 3px",
+    border: "2px solid " + theme.palette.divider,
+    borderRadius: "4px",
+    overflowY: "scroll",
+    "&::-webkit-scrollbar-thumb": {
+      background: theme.palette.primary.light,
+    },
+    "&::-webkit-scrollbar": {
+      width: "13px",
+      backgroundColor: theme.palette.background.paper,
+    },
   };
 
   const activeWordRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
-    activeWordRef.current?.scrollIntoView()
-  }, [currentWordIndex])
+    activeWordRef.current?.scrollIntoView({
+      inline: "start"
+    });
+  }, [currentWordIndex]);
 
   const getWordType = (
     wordIndex: number,

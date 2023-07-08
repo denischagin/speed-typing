@@ -76,6 +76,9 @@ export const createCustomTheme = () => {
       default: grey[100]
     },
     palette: {
+      background: {
+        paper: grey[200]
+      },
       primary: {
         main: BLUE[500],
         light: BLUE["A100"],
