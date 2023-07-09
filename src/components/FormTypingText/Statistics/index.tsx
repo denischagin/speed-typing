@@ -31,6 +31,8 @@ const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
         printSpeedLetterPerMinute,
         printSpeedWordsPerMinute,
         text,
+        mistakes: mistakesCount,
+        time: timer
       })
     );
   }, []);

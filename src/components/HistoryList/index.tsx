@@ -4,17 +4,25 @@ import HistoryItem from "./HistoryItem";
 import { IHistoryStatistic } from "../../types/IHistoryStatistic";
 
 interface HistoryListProps {
-  historyList: IHistoryStatistic[],
-  historyPagination: IHistoryStatistic[]
+  historyList: IHistoryStatistic[];
+  historyPagination: IHistoryStatistic[];
 }
 
-const HistoryList: FC<HistoryListProps> = ({historyList, historyPagination}) => {
+const HistoryList: FC<HistoryListProps> = ({
+  historyList,
+  historyPagination,
+}) => {
   return (
-    <Box>
+    <Box height="264px">
       {historyList.length === 0 ? (
-        <MenuItem>
-          <Typography variant="h5">История попыток пустая</Typography>
-        </MenuItem>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="264px"
+        >
+          <Typography variant="h4">История попыток пустая</Typography>
+        </Box>
       ) : (
         historyPagination.map((attemp) => (
           <HistoryItem attempt={attemp} key={attemp.id} />
