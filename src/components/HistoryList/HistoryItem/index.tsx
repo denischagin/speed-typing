@@ -9,6 +9,7 @@ import {
   useTheme,
 } from "@mui/material";
 import textIcon from "../../../assets/text-icon.svg";
+import trashIcon from "../../../assets/trash-icon.svg";
 import { IHistoryStatistic } from "../../../types/IHistoryStatistic";
 import { useAppDispatch } from "../../../hooks/redux";
 import { removeTypingHistory } from "../../../store/slices/statisticsSlice";
@@ -33,11 +34,11 @@ const modalContent: SxProps = {
 
 interface HistoryItemProps {
   attempt: IHistoryStatistic;
+  index: number;
 }
 
-const HistoryItem: React.FC<HistoryItemProps> = ({ attempt }) => {
+const HistoryItem: React.FC<HistoryItemProps> = ({ attempt, index }) => {
   const [openModal, setOpenModal] = useState(false);
-  const { palette } = useTheme();
 
   const dispatch = useAppDispatch();
 
@@ -54,10 +55,10 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ attempt }) => {
       display="flex"
       flexDirection="column"
       sx={{
-        background: "#AED8E699",
+        background: index % 2 === 0 ? "#AED8E699" : "#AED8E655",
         borderRadius: "10px",
         p: "0 20px",
-        "& + &": {
+        "* + &": {
           mt: "10px",
         },
       }}
@@ -95,16 +96,17 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ attempt }) => {
           />
         </IconButton>
 
-        <Button
-          variant="outlined"
-          color="primary"
+        <IconButton
           onClick={() => dispatch(removeTypingHistory(attempt.id))}
-          sx={{
-            ml: "4px",
-          }}
+    
         >
-          Удалить
-        </Button>
+          <Box
+            aria-label="trashIcon"
+            component="img"
+            src={trashIcon}
+            width="30px"
+          />
+        </IconButton>
 
         <Modal
           open={openModal}

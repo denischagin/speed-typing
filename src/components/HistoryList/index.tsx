@@ -24,8 +24,8 @@ const HistoryList: FC<HistoryListProps> = ({
           <Typography variant="h4">История попыток пустая</Typography>
         </Box>
       ) : (
-        historyPagination.map((attemp) => (
-          <HistoryItem attempt={attemp} key={attemp.id} />
+        historyPagination.map((attemp, index) => (
+          <HistoryItem attempt={attemp} key={attemp.id} index={index} />
         ))
       )}
     </Box>
