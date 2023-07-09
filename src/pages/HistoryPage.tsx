@@ -217,7 +217,10 @@ const HistoryPage = () => {
                 <Pie
                   dataKey="value"
                   data={[
-                    { name: "Точность", value: accuracy },
+                    {
+                      name: "Точность",
+                      value: parseFloat(accuracy.toFixed(2)),
+                    },
                     {
                       name: "Количество ошибок",
                       value: parseFloat((100 - accuracy).toFixed(2)),
