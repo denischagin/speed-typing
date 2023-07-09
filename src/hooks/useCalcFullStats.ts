@@ -25,6 +25,11 @@ export const useCalcFullStats = (
     return acc + value.mistakes;
   }, 0);
 
+  let totalTextSymbolCount = history.reduce((acc, value) => {
+    return acc + value.text.length;
+  }, 0);
+
+
   let countAttempts = history.length;
 
   let totalPrintSpeedLetterPerMinute = history.reduce((acc, value) => {
@@ -61,8 +66,7 @@ export const useCalcFullStats = (
 
   let attemptDurations = history.map((attempt) => attempt.time);
 
-  const maxCharacters = 1000; // Максимальное количество символов в тексте
-  let accuracy = ((maxCharacters - totalMistakes) / maxCharacters) * 100;
+  let accuracy = ((totalTextSymbolCount - totalMistakes) / totalTextSymbolCount) * 100;
 
   const historyWithIndex = history.map((attemp, index) => ({
     ...attemp,
