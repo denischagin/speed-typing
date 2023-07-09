@@ -38,6 +38,13 @@ npm run dev
 - После окончания теста выводится результат - скорость печати и количество ошибок.
 
 
-Главный экран приложения:
+## Скриншоты
+
+### Главная страница приложения:
 ![image](https://github.com/denischagin/speed-typing/assets/98116130/98cc6d4e-602f-44fd-b971-9d57e1612154)
+
+### Страница со статистикой:
+![image](https://github.com/denischagin/speed-typing/assets/98116130/d134b394-4613-4750-946c-9e6346a3b862)
+![image](https://github.com/denischagin/speed-typing/assets/98116130/692d783a-0d0b-4392-855f-f72214abb9cf)
+
 
