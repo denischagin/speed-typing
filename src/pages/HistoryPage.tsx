@@ -80,7 +80,7 @@ const HistoryPage = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        gap: "100px",
+        gap: "50px",
       }}
     >
       <Grid
@@ -93,14 +93,17 @@ const HistoryPage = () => {
         <Grid item xs={6}>
           <HistoryStatItem title="Количество попыток:" value={countAttempts} />
           <HistoryStatItem
+            type="best"
             title="Наивысшая скорость печати (букв в минуту):"
             value={highestPrintSpeedLetterPerMinute}
           />
           <HistoryStatItem
+            type="average"
             title="Средняя скорость печати (букв в минуту):"
             value={averagePrintSpeedLetterPerMinute}
           />
           <HistoryStatItem
+            type="worst"
             title="Наименьшая скорость печати (букв в минуту):"
             value={lowestPrintSpeedLetterPerMinute}
           />
@@ -108,18 +111,22 @@ const HistoryPage = () => {
 
         <Grid item xs={6}>
           <HistoryStatItem
+            type="errors"
             title="Общее количество ошибок:"
             value={totalMistakes}
           />
           <HistoryStatItem
+            type="best"
             title="Наивысшая скорость печати (слов в минуту):"
             value={highestPrintSpeedWordsPerMinute}
           />
           <HistoryStatItem
+            type="average"
             title="Средняя скорость печати (слов в минуту):"
             value={averagePrintSpeedWordsPerMinute}
           />
           <HistoryStatItem
+            type="worst"
             title="Наименьшая скорость печати (слов в минуту):"
             value={lowestPrintSpeedWordsPerMinute}
           />
@@ -127,7 +134,14 @@ const HistoryPage = () => {
       </Grid>
 
       <Box>
-        <Typography variant="h6">Все попытки:</Typography>
+        <Typography
+          variant="h6"
+          sx={{
+            mb: "5px",
+          }}
+        >
+          Все попытки:
+        </Typography>
 
         <HistoryList
           historyList={history}

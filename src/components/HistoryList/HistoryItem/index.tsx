@@ -50,8 +50,24 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ attempt }) => {
   };
 
   return (
-    <Box display="flex" flexDirection="column">
-      <Box display="flex" padding="10px" alignItems="center" border={`1px solid $`}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      sx={{
+        background: "#AED8E699",
+        borderRadius: "10px",
+        p: "0 20px",
+        "& + &": {
+          mt: "10px",
+        },
+      }}
+    >
+      <Box
+        display="flex"
+        padding="10px"
+        alignItems="center"
+        border={`1px solid $`}
+      >
         <Box aria-label="attempt" display="flex" gap="5px" flexGrow={1}>
           <Typography sx={{ wordBreak: "break-all" }}>
             {attempt.printSpeedLetterPerMinute} символов в минуту,
@@ -79,7 +95,14 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ attempt }) => {
           />
         </IconButton>
 
-        <Button onClick={() => dispatch(removeTypingHistory(attempt.id))}>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => dispatch(removeTypingHistory(attempt.id))}
+          sx={{
+            ml: "4px",
+          }}
+        >
           Удалить
         </Button>
 

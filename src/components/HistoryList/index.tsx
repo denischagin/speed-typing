@@ -13,7 +13,7 @@ const HistoryList: FC<HistoryListProps> = ({
   historyPagination,
 }) => {
   return (
-    <Box height="264px">
+    <Box height="294px">
       {historyList.length === 0 ? (
         <Box
           display="flex"
