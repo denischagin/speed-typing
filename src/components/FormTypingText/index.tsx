@@ -58,6 +58,10 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
     return timerIsStarted;
   }, [timerIsStarted]);
 
+  const { isLoading, textNumber, textType } = useAppSelector(
+    (state) => state.statistics
+  );
+
   useEffect(() => {
     !timerIsStartedMemo
       ? (document.title = TitleEnum.DEFAULT)
@@ -67,12 +71,8 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
     };
   }, [timerIsStartedMemo]);
 
-  const { isLoading, textNumber, textType } = useAppSelector(
-    (state) => state.statistics
-  );
-
   useEffect(() => {
-    if (printingText == "") return;
+    if (printingText === "") return;
     startNewText();
   }, [printingText]);
 
@@ -111,7 +111,11 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
     const wordInValue = currentValue.substring(0, currentValue.length - 1);
 
     if (
+      // Если пользователь правильно вводит значение
+
+      // Слово начинается на значение в Input
       words[currentWordIndex].startsWith(currentValue) ||
+      // Последний символ пробел и слово без пробела в конце равно значению из Input
       (lastSymbol === " " && words[currentWordIndex] === wordInValue)
     ) {
       setIsErrorInput(false);
@@ -129,6 +133,7 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
 
       dispatch(setCurrentSymbol(currentSymbol));
     } else {
+      // Если пользователь ошибается
       dispatch(setCurrentSymbol("Backspace"));
       !isErrorInput && dispatch(incrementMistakes());
       setIsErrorInput(true);
