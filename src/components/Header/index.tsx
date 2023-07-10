@@ -124,9 +124,10 @@ const Header: FC<HeaderProps> = ({}) => {
   const [selectedFontSize, setSelectedFontSize] = useState(fontSize);
   const [selectedFontWeight, setSelectedFontWeight] = useState(fontWeight);
 
+
   const handleSubmitSettings = () => {
     dispatch(setFontFamily(selectedFontFamily));
-    dispatch(setFontSize(selectedFontSize.toString() + "px"));
+    dispatch(setFontSize(selectedFontSize.toString()));
     dispatch(setFontWeight(selectedFontWeight));
   };
 
@@ -145,6 +146,9 @@ const Header: FC<HeaderProps> = ({}) => {
   const handleFontWeightChange = (event: SelectChangeEvent) => {
     setSelectedFontWeight(event.target.value as FontWeightType);
   };
+
+  console.log(selectedFontSize)
+
 
   return (
     <>

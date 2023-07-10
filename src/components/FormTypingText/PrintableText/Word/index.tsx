@@ -33,7 +33,7 @@ const Word = forwardRef<HTMLParagraphElement, WordProps>(
       // settings
       fontWeight,
       fontFamily,
-      fontSize,
+      fontSize: fontSize + "px",
 
       display: "inline-block",
       padding: "2px 4px",
