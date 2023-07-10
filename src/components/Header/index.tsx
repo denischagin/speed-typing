@@ -158,6 +158,7 @@ const Header: FC<HeaderProps> = ({}) => {
           </Button>
         </Toolbar>
       </AppBar>
+
       <Drawer anchor="right" open={isDrawerOpen} onClose={handleDrawerClose}>
         <Box sx={{ displya: "flex", flexDirection: "column", width: 250 }}>
           <ListItem>
@@ -170,15 +171,25 @@ const Header: FC<HeaderProps> = ({}) => {
               <Select
                 fullWidth
                 value={fontFamily}
+                sx={{
+                  fontFamily,
+                }}
                 onChange={handleFontFamilyChange}
               >
                 {fontFamilies.map((fontFamily) => (
-                  <MenuItem key={fontFamily} value={fontFamily}>
+                  <MenuItem
+                    key={fontFamily}
+                    sx={{
+                      fontFamily,
+                    }}
+                    value={fontFamily}
+                  >
                     {fontFamily}
                   </MenuItem>
                 ))}
               </Select>
             </ListItem>
+
             <ListItem sx={{ display: "flex", flexDirection: "column" }}>
               <Typography>Размер шрифта: {fontSize}</Typography>
               <Slider
@@ -196,10 +207,15 @@ const Header: FC<HeaderProps> = ({}) => {
               <Select
                 fullWidth
                 value={fontWeight}
+                sx={{ fontWeight }}
                 onChange={handleFontWeightChange}
               >
                 {Object.keys(fontWeightsTranslate).map((fontWeight: string) => (
-                  <MenuItem key={fontWeight} value={fontWeight}>
+                  <MenuItem
+                    key={fontWeight}
+                    sx={{ fontWeight }}
+                    value={fontWeight}
+                  >
                     {fontWeightsTranslate[fontWeight as FontWeightType]}
                   </MenuItem>
                 ))}
