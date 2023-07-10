@@ -120,9 +120,18 @@ const Header: FC<HeaderProps> = ({}) => {
     (state) => state.settings
   );
 
-  const handleFontFamilyChange = (event: SelectChangeEvent) => {
-    const selectedFontFamily = event.target.value as FontFamilyType;
+  const [selectedFontFamily, setSelectedFontFamily] = useState(fontFamily);
+  const [selectedFontSize, setSelectedFontSize] = useState(fontSize);
+  const [selectedFontWeight, setSelectedFontWeight] = useState(fontWeight);
+
+  const handleSubmitSettings = () => {
     dispatch(setFontFamily(selectedFontFamily));
+    dispatch(setFontSize(selectedFontSize.toString() + "px"));
+    dispatch(setFontWeight(selectedFontWeight));
+  };
+
+  const handleFontFamilyChange = (event: SelectChangeEvent) => {
+    setSelectedFontFamily(event.target.value as FontFamilyType);
   };
 
   const handleFontSizeChange = (
@@ -130,13 +139,11 @@ const Header: FC<HeaderProps> = ({}) => {
     value: number | number[],
     activeThumb: number
   ) => {
-    const selectedFontSize = value;
-    dispatch(setFontSize(selectedFontSize.toString() + "px"));
+    setSelectedFontSize(value.toString());
   };
 
   const handleFontWeightChange = (event: SelectChangeEvent) => {
-    const selectedFontWeight = event.target.value as FontWeightType;
-    dispatch(setFontWeight(selectedFontWeight));
+    setSelectedFontWeight(event.target.value as FontWeightType);
   };
 
   return (
@@ -160,19 +167,48 @@ const Header: FC<HeaderProps> = ({}) => {
       </AppBar>
 
       <Drawer anchor="right" open={isDrawerOpen} onClose={handleDrawerClose}>
-        <Box sx={{ displya: "flex", flexDirection: "column", width: 250 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: 300,
+            p: "0 3px",
+          }}
+        >
           <ListItem>
             <Typography variant="h6">Настроить шрифт:</Typography>
           </ListItem>
-          <Divider />
+
+          <Divider  />
+
           <List sx={{ width: "100%" }}>
+            <ListItem
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                height: "75px",
+                borderRadius: "3px",
+                boxShadow: `inset 0px 0px 2px 1px ${palette.grey[500]}`,
+              }}
+            >
+              <Typography
+                sx={{
+                  fontWeight: selectedFontWeight,
+                  fontFamily: selectedFontFamily,
+                  fontSize: selectedFontSize + "px",
+                }}
+              >
+                Пример текста
+              </Typography>
+            </ListItem>
+
             <ListItem sx={{ display: "flex", flexDirection: "column" }}>
-              <Typography>Тип шрифта</Typography>
+              <Typography variant="subtitle1">Тип шрифта</Typography>
               <Select
                 fullWidth
-                value={fontFamily}
+                value={selectedFontFamily}
                 sx={{
-                  fontFamily,
+                  fontFamily: selectedFontFamily,
                 }}
                 onChange={handleFontFamilyChange}
               >
@@ -191,9 +227,9 @@ const Header: FC<HeaderProps> = ({}) => {
             </ListItem>
 
             <ListItem sx={{ display: "flex", flexDirection: "column" }}>
-              <Typography>Размер шрифта: {fontSize}</Typography>
+              <Typography>Размер шрифта: {selectedFontSize}</Typography>
               <Slider
-                value={parseInt(fontSize)}
+                value={parseInt(selectedFontSize)}
                 onChange={handleFontSizeChange}
                 min={15}
                 max={30}
@@ -202,12 +238,13 @@ const Header: FC<HeaderProps> = ({}) => {
                 valueLabelDisplay="auto"
               />
             </ListItem>
+
             <ListItem sx={{ display: "flex", flexDirection: "column" }}>
               <Typography>Толщина шрифта</Typography>
               <Select
                 fullWidth
-                value={fontWeight}
-                sx={{ fontWeight }}
+                value={selectedFontWeight}
+                sx={{ fontWeight: selectedFontWeight }}
                 onChange={handleFontWeightChange}
               >
                 {Object.keys(fontWeightsTranslate).map((fontWeight: string) => (
@@ -220,6 +257,11 @@ const Header: FC<HeaderProps> = ({}) => {
                   </MenuItem>
                 ))}
               </Select>
+            </ListItem>
+            <ListItem>
+              <Button variant="outlined" onClick={handleSubmitSettings}>
+                Применить
+              </Button>
             </ListItem>
           </List>
         </Box>
