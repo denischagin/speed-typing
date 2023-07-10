@@ -4,12 +4,14 @@ import keyboardSlice from './slices/keyboardSlice';
 import timerSlice from './slices/timerSlice';
 import statatisticsSlice from './slices/statisticsSlice';
 import { loadStateFromLocalStorage, saveStateToLocalStorage } from "./functions/localeStorage";
+import settingsSlice from "./slices/settingsSlice";
 
 const rootReducer = combineReducers({
     mistakes: mistakesSlice,
     keyboard: keyboardSlice,
     timer: timerSlice,
     statistics: statatisticsSlice,
+    settings: settingsSlice,
 })
 
 

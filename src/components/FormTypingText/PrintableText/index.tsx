@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef } from "react";
-import { SxProps, Typography, useTheme } from "@mui/material";
+import { Box, SxProps, Typography, useTheme } from "@mui/material";
 import Word from "./Word";
 import { WordType } from "../../../types/WordType";
 
@@ -18,10 +18,8 @@ const PrintableText: FC<IPrintableTextProps> = ({
   // styles
   const commonText: SxProps = {
     fontSize: "20px",
-    height: "400px",
+    height: "100%",
     width: "100%",
-    p: "0 3px",
-    border: "2px solid " + theme.palette.divider,
     borderRadius: "4px",
     overflowY: "scroll",
     "&::-webkit-scrollbar-thumb": {
@@ -38,14 +36,12 @@ const PrintableText: FC<IPrintableTextProps> = ({
 
   useEffect(() => {
     if (!containerRef.current || !activeWordRef.current) return;
-    const scrollOffset = 6;
 
     containerRef.current.scrollTo({
       top:
         activeWordRef.current.offsetTop -
-        containerRef.current.offsetTop -
-        scrollOffset,
-      behavior: "smooth"
+        containerRef.current.offsetTop,
+      behavior: "smooth",
     });
   }, [currentWordIndex]);
 
@@ -62,17 +58,26 @@ const PrintableText: FC<IPrintableTextProps> = ({
   };
 
   return (
-    <Typography variant="body1" sx={commonText} ref={containerRef}>
-      {words.map((word, wordIndex) => (
-        <Word
-          ref={wordIndex === currentWordIndex ? activeWordRef : undefined}
-          key={wordIndex}
-          index={wordIndex}
-          type={getWordType(wordIndex, currentWordIndex, isError)}
-          text={word}
-        />
-      ))}
-    </Typography>
+    <Box
+      sx={{
+        height: "400px",
+        width: "100%",
+        p: "3px 3px",
+        border: "2px solid " + theme.palette.divider,
+      }}
+    >
+      <Typography variant="body1" sx={commonText} ref={containerRef}>
+        {words.map((word, wordIndex) => (
+          <Word
+            ref={wordIndex === currentWordIndex ? activeWordRef : undefined}
+            key={wordIndex}
+            index={wordIndex}
+            type={getWordType(wordIndex, currentWordIndex, isError)}
+            text={word}
+          />
+        ))}
+      </Typography>
+    </Box>
   );
 };
 

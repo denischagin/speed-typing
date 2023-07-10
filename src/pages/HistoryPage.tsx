@@ -1,30 +1,20 @@
 import React, { useState } from "react";
 import { useAppSelector } from "../hooks/redux";
 import {
-  MenuItem,
   Typography,
   Container,
   Box,
   Pagination,
-  IconButton,
-  Modal,
-  SxProps,
   Grid,
-  useTheme,
 } from "@mui/material";
-import HistoryItem from "../components/HistoryList/HistoryItem";
 import HistoryList from "../components/HistoryList";
 import { useCalcFullStats } from "../hooks/useCalcFullStats";
 import {
   Area,
   AreaChart,
-  Bar,
-  BarChart,
   CartesianGrid,
   Cell,
   Legend,
-  Line,
-  LineChart,
   Pie,
   PieChart,
   ResponsiveContainer,

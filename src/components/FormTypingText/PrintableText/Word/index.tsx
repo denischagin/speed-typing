@@ -10,6 +10,7 @@ import React, {
 } from "react";
 import { Typography, SxProps, useTheme } from "@mui/material";
 import { WordType } from "../../../../types/WordType";
+import { useAppSelector } from "../../../../hooks/redux";
 
 interface WordProps {
   text: string;
@@ -24,7 +25,16 @@ const Word = forwardRef<HTMLParagraphElement, WordProps>(
   ) => {
     const theme = useTheme();
 
+    const { fontWeight, fontFamily, fontSize } = useAppSelector(
+      (state) => state.settings
+    );
+
     const spanText: SxProps = {
+      // settings
+      fontWeight,
+      fontFamily,
+      fontSize,
+
       display: "inline-block",
       padding: "2px 4px",
       boxShadow: "0px 0px 2px transparent",
