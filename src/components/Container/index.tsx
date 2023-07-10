@@ -2,22 +2,16 @@ import { Box } from "@mui/material";
 import React, { FC, ReactNode } from "react";
 
 interface ContainerProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 const Container: FC<ContainerProps> = ({ children }) => {
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
         maxWidth: "1000px",
         padding: "0 15px",
         margin: "0 auto",
-        marginBottom: "10px",
-        gap: "30px",
       }}
     >
       {children}

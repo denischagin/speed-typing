@@ -56,7 +56,7 @@ const KeyboardRow: FC<IKeyboardRowProps> = ({ lettersRow, currentSymbol }) => {
     key = key.toLocaleLowerCase();
 
     const fingerMapping: { [key: string]: string[] } = {
-      thumb: ["space", 'alt', ],
+      thumb: ["space", 'alt', 'win' ],
       indexLeft: ["к", "а", "м", "е", "п", "и", "4", "5"],
       indexRight: ["г", "о", "ь", "н", "р", "т", "6", "7"],
       middle: ["у", "в", "с", "ш", "л", "б", "8", "3"],

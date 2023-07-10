@@ -10,6 +10,7 @@ interface IKeyProps {
 
 const Key: FC<IKeyProps> = ({ content, flexGrow, active, color }) => {
   const theme = useTheme();
+
   const key: SxProps = {
     textAlign: "center",
     padding: "3px",
@@ -30,7 +31,7 @@ const Key: FC<IKeyProps> = ({ content, flexGrow, active, color }) => {
 
   return (
     <Box sx={keyStyles}>
-      <Typography variant="subtitle1">{content}</Typography>
+      <Typography variant="h6">{content}</Typography>
     </Box>
   );
 };
