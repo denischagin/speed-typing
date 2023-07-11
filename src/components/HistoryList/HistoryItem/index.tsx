@@ -38,6 +38,7 @@ interface HistoryItemProps {
 }
 
 const HistoryItem: React.FC<HistoryItemProps> = ({ attempt, index }) => {
+  const { pastel } = useTheme().palette;
   const [openModal, setOpenModal] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -55,7 +56,7 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ attempt, index }) => {
       display="flex"
       flexDirection="column"
       sx={{
-        background: index % 2 === 0 ? "#AED8E699" : "#AED8E655",
+        background: index % 2 === 0 ? pastel.blue[200] :  pastel.blue[100],
         borderRadius: "10px",
         p: "0 20px",
         "* + &": {

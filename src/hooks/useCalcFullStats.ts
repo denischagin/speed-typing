@@ -29,7 +29,6 @@ export const useCalcFullStats = (
     return acc + value.text.length;
   }, 0);
 
-
   let countAttempts = history.length;
 
   let totalPrintSpeedLetterPerMinute = history.reduce((acc, value) => {

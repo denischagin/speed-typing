@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import React, { FC } from "react";
 import { HistoryStatItemType } from "../../types/HistoryStatItemType";
 
@@ -8,11 +8,12 @@ interface HistoryStatItemProps {
   type?: HistoryStatItemType;
 }
 
-const HistoryStatItem: FC<HistoryStatItemProps> = ({
+const StatItem: FC<HistoryStatItemProps> = ({
   title,
   value,
   type = "default",
 }) => {
+  const { pastel } = useTheme().palette;
   const historyStatItemStyles = {
     bgcolor: "",
     borderRadius: 4,
@@ -24,32 +25,35 @@ const HistoryStatItem: FC<HistoryStatItemProps> = ({
     },
   };
 
-  let bgcolor: string = "#AFDAFC99";
+  let bgcolor: string = pastel.blue.light;
 
   switch (type) {
     case "errors":
-      bgcolor = "#FFB6C199"
+      bgcolor = pastel.red;
       break;
     case "average":
-      bgcolor = "#AED8E6aa"
+      bgcolor = pastel.blue.normal;
       break;
     case "best":
-      bgcolor = "#a2d9afaa"
+      bgcolor = pastel.green;
       break;
     case "worst":
-      bgcolor = "#9dc3e6aa"
+      bgcolor = pastel.blue.dark;
       break;
   }
 
-
-  if (Number.isNaN(value) || !Number.isFinite(value)) value = 0;
+  if (
+    Number.isNaN(value) ||
+    (!Number.isFinite(value) && typeof value !== "string")
+  )
+    value = 0;
 
   return (
-    <Box sx={{...historyStatItemStyles, bgcolor}}>
+    <Box sx={{ ...historyStatItemStyles, bgcolor }}>
       <Typography variant="h6">{title}</Typography>
       <Typography>{value}</Typography>
     </Box>
   );
 };
 
-export default HistoryStatItem;
+export default StatItem;

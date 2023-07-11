@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { useAppSelector } from "../hooks/redux";
-import {
-  Typography,
-  Container,
-  Box,
-  Pagination,
-  Grid,
-} from "@mui/material";
+import { Typography, Container, Box, Pagination, Grid } from "@mui/material";
 import HistoryList from "../components/HistoryList";
 import { useCalcFullStats } from "../hooks/useCalcFullStats";
 import {
@@ -22,7 +16,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import HistoryStatItem from "../components/HistoryStatItem";
+import StatItem from "../components/HistoryStatItem";
+import PieDiagram from "../components/PieDiagram";
 
 const HistoryPage = () => {
   const statsHistoryStatItemSx = {
@@ -65,6 +60,17 @@ const HistoryPage = () => {
     setPageNumber(page - 1);
   };
 
+  const pieData = [
+    {
+      name: "Точность",
+      value: parseFloat(accuracy.toFixed(2)),
+    },
+    {
+      name: "Количество ошибок",
+      value: parseFloat((100 - accuracy).toFixed(2)),
+    },
+  ];
+
   return (
     <Container
       sx={{
@@ -81,18 +87,18 @@ const HistoryPage = () => {
         direction="row"
       >
         <Grid item xs={6}>
-          <HistoryStatItem title="Количество попыток:" value={countAttempts} />
-          <HistoryStatItem
+          <StatItem title="Количество попыток:" value={countAttempts} />
+          <StatItem
             type="best"
             title="Наивысшая скорость печати (букв в минуту):"
             value={highestPrintSpeedLetterPerMinute}
           />
-          <HistoryStatItem
+          <StatItem
             type="average"
             title="Средняя скорость печати (букв в минуту):"
             value={averagePrintSpeedLetterPerMinute}
           />
-          <HistoryStatItem
+          <StatItem
             type="worst"
             title="Наименьшая скорость печати (букв в минуту):"
             value={lowestPrintSpeedLetterPerMinute}
@@ -100,22 +106,22 @@ const HistoryPage = () => {
         </Grid>
 
         <Grid item xs={6}>
-          <HistoryStatItem
+          <StatItem
             type="errors"
             title="Общее количество ошибок:"
             value={totalMistakes}
           />
-          <HistoryStatItem
+          <StatItem
             type="best"
             title="Наивысшая скорость печати (слов в минуту):"
             value={highestPrintSpeedWordsPerMinute}
           />
-          <HistoryStatItem
+          <StatItem
             type="average"
             title="Средняя скорость печати (слов в минуту):"
             value={averagePrintSpeedWordsPerMinute}
           />
-          <HistoryStatItem
+          <StatItem
             type="worst"
             title="Наименьшая скорость печати (слов в минуту):"
             value={lowestPrintSpeedWordsPerMinute}
@@ -199,37 +205,8 @@ const HistoryPage = () => {
 
           <Grid item xs={12} md={6} sx={statsHistoryStatItemSx}>
             <Typography variant="subtitle1">Точность</Typography>
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart
-                style={{ fontSize: "18px", fontFamily: "Roboto" }}
-                margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
-              >
-                <Pie
-                  dataKey="value"
-                  data={[
-                    {
-                      name: "Точность",
-                      value: parseFloat(accuracy.toFixed(2)),
-                    },
-                    {
-                      name: "Количество ошибок",
-                      value: parseFloat((100 - accuracy).toFixed(2)),
-                    },
-                  ]}
-                  cx="50%"
-                  cy="40%"
-                  innerRadius="30%"
-                  outerRadius="70%"
-                  fill="#82ca9d"
-                  label
-                >
-                  <Cell fill="#82ca9d" />
-                  <Cell fill="#8884d8" />
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
+
+            <PieDiagram data={pieData} />
           </Grid>
         </Grid>
       </Box>

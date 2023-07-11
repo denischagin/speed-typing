@@ -90,6 +90,9 @@ const Header: FC<HeaderProps> = ({}) => {
   };
 
   const handleDrawerClose = () => {
+    setSelectedFontFamily(fontFamily);
+    setSelectedFontSize(fontSize);
+    setSelectedFontWeight(fontWeight);
     setIsDrawerOpen(false);
   };
 
@@ -124,7 +127,6 @@ const Header: FC<HeaderProps> = ({}) => {
   const [selectedFontSize, setSelectedFontSize] = useState(fontSize);
   const [selectedFontWeight, setSelectedFontWeight] = useState(fontWeight);
 
-
   const handleSubmitSettings = () => {
     dispatch(setFontFamily(selectedFontFamily));
     dispatch(setFontSize(selectedFontSize.toString()));
@@ -146,9 +148,6 @@ const Header: FC<HeaderProps> = ({}) => {
   const handleFontWeightChange = (event: SelectChangeEvent) => {
     setSelectedFontWeight(event.target.value as FontWeightType);
   };
-
-  console.log(selectedFontSize)
-
 
   return (
     <>
@@ -183,7 +182,7 @@ const Header: FC<HeaderProps> = ({}) => {
             <Typography variant="h6">Настроить шрифт:</Typography>
           </ListItem>
 
-          <Divider  />
+          <Divider />
 
           <List sx={{ width: "100%" }}>
             <ListItem

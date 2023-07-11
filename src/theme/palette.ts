@@ -16,7 +16,7 @@ const RED = {
   A200: "#ff9c9c",
   A400: "#ff6a69",
   A700: "#ff504f",
-  contrastText: "white"
+  contrastText: "white",
 };
 
 const BLUE = {
@@ -34,10 +34,22 @@ const BLUE = {
   A200: "#939dff",
   A400: "#606eff",
   A700: "#4757ff",
-  contrastText: "white"
+  contrastText: "white",
 };
 
-declare module '@mui/material/styles' {
+interface PastelOptions {
+  red: string;
+  blue: {
+    100: string;
+    200: string;
+    light: string;
+    normal: string;
+    dark: string;
+  };
+  green: string;
+}
+
+declare module "@mui/material/styles" {
   interface Theme {
     fingers: {
       thumb: string;
@@ -46,7 +58,7 @@ declare module '@mui/material/styles' {
       ring: string;
       middle: string;
       pinky: string;
-      default: string
+      default: string;
     };
   }
   // allow configuration using `createTheme`
@@ -58,11 +70,17 @@ declare module '@mui/material/styles' {
       ring?: string;
       middle?: string;
       pinky?: string;
-      default: string
+      default: string;
     };
   }
-}
+  interface Palette {
+    pastel: PastelOptions;
+  }
 
+  interface PaletteOptions {
+    pastel: PastelOptions;
+  }
+}
 
 export const createCustomTheme = () => {
   return createTheme({
@@ -73,11 +91,22 @@ export const createCustomTheme = () => {
       middle: green[100],
       ring: yellow[100],
       pinky: purple[100],
-      default: grey[100]
+      default: grey[100],
     },
     palette: {
+      pastel: {
+        red: "#ffb6c199",
+        green: "#a2d9afaa",
+        blue: {
+          "100": "#E4F2F7",
+          "200": "#CEE8F0",
+          light: "#afdafc99",
+          normal: "#C9E5EE",
+          dark: "#BED7EE",
+        },
+      },
       background: {
-        paper: grey[200]
+        paper: grey[200],
       },
       primary: {
         main: BLUE[500],
@@ -93,8 +122,8 @@ export const createCustomTheme = () => {
       },
       success: {
         main: green[400],
-        light: green[100]
-      }
+        light: green[100],
+      },
     },
   });
 };
