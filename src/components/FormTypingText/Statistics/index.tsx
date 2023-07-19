@@ -19,6 +19,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import BarDiagram, { BarItem } from "../../BarDiagram";
 
 interface StatisticsProps {
   closeStatistic: () => void;
@@ -32,19 +33,18 @@ const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
     flexDirection: "column",
     alignItems: "center",
   };
-  const dispatch = useAppDispatch();
 
-  const { mistakesCount } = useAppSelector((state) => state.mistakes);
   const { history } = useAppSelector((state) => state.statistics);
-  const { timer } = useAppSelector((state) => state.timer);
-  const { text } = useAppSelector((state) => state.statistics);
 
-  const { printSpeedLetterPerMinute, printSpeedWordsPerMinute } =
-    useTypingSpeed(timer, text);
+  const {
+    mistakes,
+    printSpeedLetterPerMinute,
+    printSpeedWordsPerMinute,
+    text,
+    time,
+  } = history[history.length - 1];
 
-  const historyWithOutLast = history.slice(0, -1)
-
-  
+  const historyWithOutLast = history.slice(0, -1);
 
   const {
     highestPrintSpeedWordsPerMinute,
@@ -55,20 +55,7 @@ const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
     averagePrintSpeedWordsPerMinute,
   } = useCalcFullStats(historyWithOutLast);
 
-  useEffect(() => {
-    dispatch(
-      addTypingHistory({
-        id: Date.now(),
-        printSpeedLetterPerMinute,
-        printSpeedWordsPerMinute,
-        text,
-        mistakes: mistakesCount,
-        time: timer,
-      })
-    );
-  }, []);
-
-  let accuracy = ((text.length - mistakesCount) / text.length) * 100;
+  let accuracy = ((text.length - mistakes) / text.length) * 100;
 
   accuracy = Math.abs(accuracy) >= 100 ? 0 : accuracy;
 
@@ -80,34 +67,25 @@ const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
   const barData = [
     {
       name: "Попытки (симв./мин.)",
-      current: isFinite(printSpeedLetterPerMinute)
-        ? printSpeedLetterPerMinute
-        : 0,
-      best: isFinite(highestPrintSpeedLetterPerMinute)
-        ? highestPrintSpeedLetterPerMinute
-        : 0,
-      average: isFinite(averagePrintSpeedLetterPerMinute)
-        ? averagePrintSpeedLetterPerMinute
-        : 0,
-      worst: isFinite(lowestPrintSpeedLetterPerMinute)
-        ? lowestPrintSpeedLetterPerMinute
-        : 0,
+      current: printSpeedLetterPerMinute,
+      best: highestPrintSpeedLetterPerMinute,
+      average: averagePrintSpeedLetterPerMinute,
+      worst: lowestPrintSpeedLetterPerMinute,
     },
     {
       name: "Попытки (слов/мин.)",
-      current: isFinite(printSpeedWordsPerMinute)
-        ? printSpeedWordsPerMinute
-        : 0,
-      best: isFinite(highestPrintSpeedWordsPerMinute)
-        ? highestPrintSpeedWordsPerMinute
-        : 0,
-      average: isFinite(averagePrintSpeedWordsPerMinute)
-        ? averagePrintSpeedWordsPerMinute
-        : 0,
-      worst: isFinite(lowestPrintSpeedWordsPerMinute)
-        ? lowestPrintSpeedWordsPerMinute
-        : 0,
+      current: printSpeedWordsPerMinute,
+      best: highestPrintSpeedWordsPerMinute,
+      average: averagePrintSpeedWordsPerMinute,
+      worst: lowestPrintSpeedWordsPerMinute,
     },
+  ];
+
+  const barList: BarItem[] = [
+    { name: "худшая попытка", dataKey: "worst", fill: "#82ca9daa" },
+    { name: "среднее", dataKey: "average", fill: "#82ca9ddd" },
+    { name: "текущая попытка", dataKey: "current", fill: "#8884d8" },
+    { name: "лучшая попытка", dataKey: "best", fill: "#82ca9d" },
   ];
 
   return (
@@ -119,7 +97,9 @@ const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="h5">Попытка № {historyWithOutLast.length + 1}</Typography>
+        <Typography variant="h5">
+          Попытка № {historyWithOutLast.length + 1}
+        </Typography>
         <Button onClick={closeStatistic} variant="outlined">
           Новый текст
         </Button>
@@ -133,7 +113,7 @@ const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
           />
           <StatItem
             title="Потрачено времени:"
-            value={convertMillisecondsToTime(timer)}
+            value={convertMillisecondsToTime(time)}
             type="average"
           />
         </Grid>
@@ -145,11 +125,7 @@ const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
             type="worst"
           />
 
-          <StatItem
-            title="Количество ошибок"
-            value={mistakesCount}
-            type="errors"
-          />
+          <StatItem title="Количество ошибок" value={mistakes} type="errors" />
         </Grid>
       </Grid>
       <Grid
@@ -160,29 +136,11 @@ const Statistics: FC<StatisticsProps> = ({ closeStatistic }) => {
       >
         <Grid item xs={12} md={6} sx={statsHistoryStatItemSx}>
           <Typography variant="subtitle1">Сравнение попыток</Typography>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              width={730}
-              height={250}
-              data={barData}
-              style={{ fontSize: "17px", fontFamily: "Roboto" }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar name="худшая попытка" dataKey="worst" fill="#82ca9daa" />
-              <Bar name="среднее" dataKey="average" fill="#82ca9ddd" />
-              <Bar name="текущая попытка" dataKey="current" fill="#8884d8" />
-              <Bar name="лучшая попытка" dataKey="best" fill="#82ca9d" />
-            </BarChart>
-          </ResponsiveContainer>
+          <BarDiagram data={barData} barList={barList} />
         </Grid>
 
         <Grid item xs={12} md={6} sx={statsHistoryStatItemSx}>
           <Typography variant="subtitle1">Точность</Typography>
-
           <PieDiagram data={pieData} />
         </Grid>
       </Grid>

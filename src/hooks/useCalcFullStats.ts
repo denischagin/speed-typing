@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { IHistoryStatistic } from "../types/IHistoryStatistic";
 
 export interface IHistoryStatisticWithIndex extends IHistoryStatistic {
@@ -13,10 +14,13 @@ interface IReturnedValue {
   highestPrintSpeedWordsPerMinute: number; // Самый высокий результат по скорости печати (в словах в минуту)
   lowestPrintSpeedLetterPerMinute: number; // Самый низкий результат по скорости печати (в знаках в минуту)
   lowestPrintSpeedWordsPerMinute: number; // Самый низкий результат по скорости печати (в словах в минуту)
-  attemptDurations: number[]; // Длительность каждой попытки в секундах
   accuracy: number; // Аккуратность печати
   historyWithIndex: IHistoryStatisticWithIndex[]; // каждая попытка пронумерована с помощью индекса
 }
+
+const checkIsFinite = (number: number) => {
+  return isFinite(number) ? number : 0;
+};
 
 export const useCalcFullStats = (
   history: IHistoryStatistic[]
@@ -39,36 +43,35 @@ export const useCalcFullStats = (
     return acc + value.printSpeedWordsPerMinute;
   }, 0);
 
-  let averagePrintSpeedLetterPerMinute = Math.round(
-    totalPrintSpeedLetterPerMinute / countAttempts
+  let averagePrintSpeedLetterPerMinute = checkIsFinite(
+    Math.round(totalPrintSpeedLetterPerMinute / countAttempts)
   );
 
-  let averagePrintSpeedWordsPerMinute = Math.round(
-    totalPrintSpeedWordsPerMinute / countAttempts
+  let averagePrintSpeedWordsPerMinute = checkIsFinite(
+    Math.round(totalPrintSpeedWordsPerMinute / countAttempts)
   );
 
-  let highestPrintSpeedLetterPerMinute = Math.max(
-    ...history.map((attempt) => attempt.printSpeedLetterPerMinute)
+  let highestPrintSpeedLetterPerMinute = checkIsFinite(
+    Math.max(...history.map((attempt) => attempt.printSpeedLetterPerMinute))
   );
 
-  let highestPrintSpeedWordsPerMinute = Math.max(
-    ...history.map((attempt) => attempt.printSpeedWordsPerMinute)
+  let highestPrintSpeedWordsPerMinute = checkIsFinite(
+    Math.max(...history.map((attempt) => attempt.printSpeedWordsPerMinute))
   );
 
-  let lowestPrintSpeedLetterPerMinute = Math.min(
-    ...history.map((attempt) => attempt.printSpeedLetterPerMinute)
+  let lowestPrintSpeedLetterPerMinute = checkIsFinite(
+    Math.min(...history.map((attempt) => attempt.printSpeedLetterPerMinute))
   );
 
-  let lowestPrintSpeedWordsPerMinute = Math.min(
-    ...history.map((attempt) => attempt.printSpeedWordsPerMinute)
+  let lowestPrintSpeedWordsPerMinute = checkIsFinite(
+    Math.min(...history.map((attempt) => attempt.printSpeedWordsPerMinute))
   );
 
-  let attemptDurations = history.map((attempt) => attempt.time);
+  let accuracy =
+    ((totalTextSymbolCount - totalMistakes) / totalTextSymbolCount) * 100;
 
-  let accuracy = ((totalTextSymbolCount - totalMistakes) / totalTextSymbolCount) * 100;
-
-  const historyWithIndex = history.map((attemp, index) => ({
-    ...attemp,
+  const historyWithIndex = history.map((attempt, index) => ({
+    ...attempt,
     index,
   }));
 
@@ -81,7 +84,6 @@ export const useCalcFullStats = (
     highestPrintSpeedWordsPerMinute,
     lowestPrintSpeedLetterPerMinute,
     lowestPrintSpeedWordsPerMinute,
-    attemptDurations,
     accuracy,
     historyWithIndex,
   };

@@ -1,25 +1,28 @@
-import { useState, useRef, useEffect, FC, useMemo } from "react";
+import { useState, useRef, FC } from "react";
 import PrintableText from "./PrintableText/index";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { setTimer, startTimer, stopTimer } from "../../store/slices/timerSlice";
+import { startTimer } from "../../store/slices/timerSlice";
 import Statistics from "./Statistics";
 import { setCurrentSymbol } from "../../store/slices/keyboardSlice";
 import {
   incrementMistakes,
-  setMistakes,
 } from "../../store/slices/mistakesSlice";
 import { Box, SxProps, TextField, Button, LinearProgress } from "@mui/material";
 import Keyboard from "./Keyboard";
 import { fetchText } from "../../store/asyncActions/fetchText";
 import StatsSection from "../StatsSection";
 import Timer from "./Timer";
-import { TitleEnum } from "../../types/TitleEnum";
+import {
+  useListenerCurrentWordIndex,
+  useListenerNewText,
+} from "../../hooks/typingTextHooks";
+import { useSwitchTitle } from "../../hooks/useSwitchTitle";
 
 interface IFormTypingTextProps {
-  printingText: string;
+  words: string[];
 }
 
-const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
+const FormTypingText: FC<IFormTypingTextProps> = ({ words }) => {
   // styles
   const formTypingTextWrapper: SxProps = {
     display: "flex",
@@ -43,101 +46,69 @@ const FormTypingText: FC<IFormTypingTextProps> = ({ printingText = "" }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [keyboardActive, setKeyboardActive] = useState(false);
 
-  const words = printingText.split(" ");
+  const { currentSymbol } = useAppSelector((state) => state.keyboard);
+  const { isLoading, textNumber, textType } = useAppSelector(
+    (state) => state.statistics
+  );
+
+  useListenerNewText(words, setValue, setIsErrorInput, setCurrentWordIndex);
+  useListenerCurrentWordIndex(words, currentWordIndex, setShowStats);
+  useSwitchTitle();
 
   const customEqual = (oldValue: any, newValue: any) =>
     oldValue.timerIsStarted === newValue.timerIsStarted;
 
-  const { currentSymbol } = useAppSelector((state) => state.keyboard);
   const { timerIsStarted } = useAppSelector(
     (state) => state.timer,
     customEqual
   );
 
-  const timerIsStartedMemo = useMemo(() => {
-    return timerIsStarted;
-  }, [timerIsStarted]);
-
-  const { isLoading, textNumber, textType } = useAppSelector(
-    (state) => state.statistics
-  );
-
-  useEffect(() => {
-    !timerIsStartedMemo
-      ? (document.title = TitleEnum.DEFAULT)
-      : (document.title = TitleEnum.TIME_GOES);
-    return () => {
-      document.title = TitleEnum.DEFAULT;
-    };
-  }, [timerIsStartedMemo]);
-
-  useEffect(() => {
-    if (printingText === "") return;
-    startNewText();
-  }, [printingText]);
-
-  useEffect(() => {
-    if (words.length === 0) return;
-    if (words.length === currentWordIndex) return stopTimerAndShowStats();
-
-    dispatch(setCurrentSymbol(words[currentWordIndex][0]));
-  }, [currentWordIndex]);
-
-  const startNewText = () => {
-    setValue("");
-    setIsErrorInput(false);
-    setCurrentWordIndex(0);
-    dispatch(stopTimer());
-    dispatch(setTimer(0));
-    dispatch(setCurrentSymbol(words[0][0]));
-    dispatch(setMistakes(0));
-  };
-
-  const stopTimerAndShowStats = () => {
-    setShowStats(true);
-    dispatch(stopTimer());
-  };
-
-  const onInputStart = (value: string) => {
-    if (!timerIsStartedMemo && value.length >= 1) dispatch(startTimer());
+  const onStartTyping = (value: string) => {
+    if (!timerIsStarted && value.length >= 1) dispatch(startTimer());
   };
 
   const handlerInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentValue = e.target.value;
     setValue(currentValue);
-    onInputStart(currentValue);
+    onStartTyping(currentValue);
 
     const lastSymbol = currentValue[currentValue.length - 1];
     const wordInValue = currentValue.substring(0, currentValue.length - 1);
 
     if (
-      // Если пользователь правильно вводит значение
-
       // Слово начинается на значение в Input
       words[currentWordIndex].startsWith(currentValue) ||
       // Последний символ пробел и слово без пробела в конце равно значению из Input
       (lastSymbol === " " && words[currentWordIndex] === wordInValue)
     ) {
-      setIsErrorInput(false);
-
-      if (lastSymbol === " ") {
-        setCurrentWordIndex((prev) => (prev += 1));
-        setValue("");
-      }
-
-      const currentSymbol: string | undefined =
-        words[currentWordIndex][currentValue.length];
-
-      if (currentSymbol === undefined)
-        return dispatch(setCurrentSymbol("Space"));
-
-      dispatch(setCurrentSymbol(currentSymbol));
+      handlePrintSuccess(currentValue);
     } else {
-      // Если пользователь ошибается
-      dispatch(setCurrentSymbol("Backspace"));
-      !isErrorInput && dispatch(incrementMistakes());
-      setIsErrorInput(true);
+      handlePrintError();
     }
+  };
+
+  const handlePrintError = () => {
+    dispatch(setCurrentSymbol("Backspace"));
+    !isErrorInput && dispatch(incrementMistakes());
+    setIsErrorInput(true);
+  };
+
+  const handlePrintSuccess = (currentValue: string) => {
+    const lastSymbol = currentValue[currentValue.length - 1];
+
+    setIsErrorInput(false);
+
+    if (lastSymbol === " ") {
+      setCurrentWordIndex((prev) => (prev += 1));
+      setValue("");
+    }
+
+    const currentSymbol: string | undefined =
+      words[currentWordIndex][currentValue.length];
+
+    if (currentSymbol === undefined) return dispatch(setCurrentSymbol("Space"));
+
+    dispatch(setCurrentSymbol(currentSymbol));
   };
 
   return (

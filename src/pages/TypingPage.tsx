@@ -7,7 +7,7 @@ const TypingPage = () => {
 
   return (
     <Container>
-      <FormTypingText printingText={text} />
+      <FormTypingText words={text.split(" ")} />
     </Container>
   );
 };
